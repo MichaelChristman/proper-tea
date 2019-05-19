@@ -8,25 +8,64 @@
  */
 
 ?>
-<?php the_post_thumbnail() ?>
+
+<?php
+    if ( get_post_gallery_ids() ) : ?>
+    <div class="featured-images-wrap">
+<?php
+    endif; ?>
+
+<figure id="the-featured-image">
+    <?php 
+    the_post_thumbnail('full');
+    ?>
+</figure>
+<?php
+if ( get_post_gallery_ids() ) : ?>
+
+    <figure class = "the-featured-gallery">
+        <div class="the-featured-gallery-carousel-wrap">
+        <?php
+            echo '<div class="featured-gallery-item">';
+            the_post_thumbnail('medium');
+            echo '</div>';
+            $galleryArray = get_post_gallery_ids();
+
+            foreach ( $galleryArray as $id ) {
+                echo '<div class="featured-gallery-item">';
+                echo '<img src="' . wp_get_attachment_url( $id ) .'">';
+                echo '</div>';
+            }
+        ?>
+        </div>
+    </figure>
+<?php
+endif; ?>
+
+<?php
+    if ( get_post_gallery_ids() ) : ?>
+        </div>
+<?php
+    endif; ?>
+
 <?php 
 
-    //test if we have a gallery
-    $the_content_haystack = get_the_content();
-    $needle = '[gallery';
-    $pos = strpos($the_content_haystack,$needle);
-    
-    //echo $the_content_haystack;
-    
-    if($pos === false)
-    {
-        //No image gallery. 
-        
-    }else
-    {
-        //this post has an image gallery
-        echo '<div id="gallery-link" class="button"><a href="'. get_permalink().'#gallery-'. get_the_ID().'"><img src="'.get_template_directory_uri() . '/icons/camera-icon.png"></a></div>';
-    }
+//    //test if we have a gallery
+//    $the_content_haystack = get_the_content();
+//    $needle = '[gallery';
+//    $pos = strpos($the_content_haystack,$needle);
+//    
+//    //echo $the_content_haystack;
+//    
+//    if($pos === false)
+//    {
+//        //No image gallery. 
+//        
+//    }else
+//    {
+//        //this post has an image gallery
+//        echo '<div id="gallery-link" class="button"><a href="'. get_permalink().'#gallery-'. get_the_ID().'"><img src="'.get_template_directory_uri() . '/icons/camera-icon.png"></a></div>';
+//    }
 ?>
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>

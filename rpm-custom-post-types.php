@@ -141,39 +141,39 @@ function rpmcpt_custom_post_types() {
     ];
     register_post_type('team-member', $teamMembersArgs);
 
-     $residentLabels = [
-        'name'               => 'Resident Information',
-        'singular_name'      => 'Resident Information',
-        'menu_name'          => 'Resident Information',
-        'name_admin_bar'     => 'Resident Information',
-        'add_new'            => 'Add New Resident Information',
-        'add_new_item'       => 'Add New Resident Information',
-        'new_item'           => 'New Resident Information',
-        'edit_item'          => 'Edit Resident Information',
-        'view_item'          => 'View Resident Information',
-        'all_items'          => 'All Resident Information',
-        'search_items'       => 'Search Resident Information',
-        'not_found'          => 'No Resident Information found',
-        'not_found_in_trash' => 'No Resident Information found in trash'
+    $faqLabels = [
+        'name'               => 'FAQs',
+        'singular_name'      => 'FAQ',
+        'menu_name'          => 'FAQs',
+        'name_admin_bar'     => 'FAQS',
+        'add_new'            => 'Add New Question',
+        'add_new_item'       => 'Add New Question',
+        'new_item'           => 'New Question',
+        'edit_item'          => 'Edit Question',
+        'view_item'          => 'View Question',
+        'all_items'          => 'All Questions',
+        'search_items'       => 'Search Questions',
+        'not_found'          => 'No Questions found',
+        'not_found_in_trash' => 'No Questions found in trash'
     ];
 
-    $residentArgs = [
-        'labels'             => $residentLabels,
+    $faqArgs = [
+        'labels'             => $faqLabels,
         'public'             => true,
         'publicly_queryable' => true,
         'show_ui'            => true,
         'show_in_menu'       => true,
         'show_in_nav_menus'  => true,
         'menu_position'      => 4,
-        'menu_icon'          => 'dashicons-megaphone',
-        'rewrite'            => array('slug'=> 'residentinfo'),
+        'menu_icon'          => 'dashicons-editor-help',
+        'rewrite'            => array('slug' => 'faq'),
         'capability_type'    => 'post',
         'has_archive'        => true,
         'hierarchical'       => false,
-        'supports'           => array('title', 'editor', 'thumbnail', 'page-attributes')
+        'supports'           => array('title', 'editor', 'thumbnail',
+                                'page-attributes')
     ];
-    register_post_type('resident-information', $residentArgs);
-
+    register_post_type('faq', $faqArgs);
 }
 
 add_action('init', 'rpmcpt_custom_post_types');
@@ -196,9 +196,9 @@ function rpmcpt_change_title_text( $title ){
          
         $title = 'Enter Service Name';
          
-     }else if('resident-information' == $screen->post_type ){
+     }else if('faq' == $screen->post_type ){
          
-        $title = 'Enter Resident Service';
+        $title = 'Enter Question';
          
      }else if('listing' == $screen->post_type ){
          
@@ -635,7 +635,7 @@ function rpmcpt_search_form(){
     $output .= '<div class="rpmcptselectbox">' . $select_price . '</div>';
     $output .=  sprintf(
                         /* translators: %s: More Filters. */
-                        wp_kses( __( '%s <span class="meta-nav">More Filters</span>', 'rpm-custom-post-types' ), array( 'span' => array( 'class' => array() ) ) ),
+                        wp_kses( __( '%s <span class="meta-nav"><i class="fa fa-plus"></i></span>', 'rpm-custom-post-types' ), array( 'span' => array( 'class' => array() ) ) ),
                         '<span class="screen-reader-text ">More Filters</span>'
                 ) ;
     $output .= '<div class="more-filters-wrap">';
@@ -644,9 +644,9 @@ function rpmcpt_search_form(){
     $output .= '<div class="rpmcptselectbox more-filters">' . $select_bedrooms . '</div>';
     $output .= '<div class="rpmcptselectbox more-filters">' . $select_bathrooms . '</div>';
     $output .= '</div><!--.more-filter-wrap-->';
-    $output .= '<div class="rpmcptselectbox">';
+    $output .= '<div class="rpmcptselectbox submit">';
     $output .= '<input type="hidden" name="post_type" value="listing" />';
-    $output .= '<p><input type="submit" value="Apply Filters" class="button"  /></p></div></form>';
+    $output .= '<p><input type="submit" value="Search" class="button" /></p></div></form>';
 
     return $output;
 
@@ -976,19 +976,25 @@ function rpmcpt_team_member_redirect_post() {
   }else if(is_single() && 'service' ==  $queried_post_type){
     wp_safe_redirect(site_url().'/service', 301 );
     exit;
-  }else if(is_single() && 'resident-information' == $queried_post_type){
-    wp_safe_redirect(site_url().'/residentinfo', 301 );
+  }else if(is_single() && 'faq' ==  $queried_post_type){
+    wp_safe_redirect(site_url().'/faq', 301 );
+    exit;
+  }else if(is_user_logged_in() && is_page( 'log-in' )){
+    wp_safe_redirect(site_url().'/current-residents', 301 );
     exit;
   }
   
 }
+
+
+
 
 /**********************************************************************
  *
  * Restrict Searches to Listing Archive
  * 
  ***********************************************************************/
-function listing_search_template_override($template){
+function rpmcpt_listing_search_template_override($template){
     
     global $wp_query;
     
@@ -1003,7 +1009,7 @@ function listing_search_template_override($template){
     }
     return $template;
 }
-add_filter('template_include', 'listing_search_template_override');
+add_filter('template_include', 'rpmcpt_listing_search_template_override');
 
 /*
  * Add listing filter shordcode
@@ -1033,25 +1039,22 @@ add_action('wp_ajax_myfilter', 'rpmcpt_listing_sort_function');
 add_action('wp_ajax_nopriv_myfilter', 'rpmcpt_listing_sort_function');
 function rpmcpt_listing_sort_function(){
     global $wpdb;
-
     $search_params = $_POST;
     
     if( count($search_params['query']) > 1 && !is_search_filter_blank($search_params['query'])){
         
         $ajax_select_clause = "SELECT DISTINCT $wpdb->posts.*
                                FROM $wpdb->posts ";
+        
         $ajax_join_clause .= "LEFT JOIN $wpdb->postmeta AS price
                                ON ($wpdb->posts.ID = price.post_id AND price.meta_key = '_rpmcpt_listing_price') ";
         
-
         $query_params  = $search_params['query'];
         
-
         
         if( $query_params['s'] ){
             
             $searchterm_array = explode(" ", $query_params['s']);
-
             
             for( $i = 0; $i < count($searchterm_array); $i++ ){
                 $ajax_join_clause .= "LEFT JOIN $wpdb->postmeta AS ajaxsearchterm$i "
@@ -1060,7 +1063,6 @@ function rpmcpt_listing_sort_function(){
                 //escape the keyword 
                 $clean_search_term = $wpdb->esc_like($searchterm_array[$i]);
                 $clean_search_term = "%".$clean_search_term."%";
-
                 
                 if($i === 0){
                     
@@ -1103,7 +1105,6 @@ function rpmcpt_listing_sort_function(){
         }
         
         if( $query_params[ 'availability' ]){
-
              $ajax_join_clause .= "LEFT JOIN $wpdb->postmeta AS availability
                                    ON ($wpdb->posts.ID = availability.post_id) ";
              
@@ -1120,7 +1121,6 @@ function rpmcpt_listing_sort_function(){
              
             //set the number to 2 decimal places to test against
             $query_price = floatval($query_params[ 'price' ]);
-
             //used to sanitize the user input to prevent injection
             $ajax_where_clause .= $wpdb->prepare(
                                                     " AND (price.meta_key = '_rpmcpt_listing_price' AND price.meta_value <= %f)",
@@ -1132,9 +1132,7 @@ function rpmcpt_listing_sort_function(){
         
             $ajax_join_clause .= "LEFT JOIN $wpdb->postmeta AS city
                                   ON ($wpdb->posts.ID = city.post_id) ";    
-
             $query_city = $query_params[ 'city' ];
-
             //used to sanitize the user input to prevent injection
             $ajax_where_clause .= $wpdb->prepare(   
                                                     " AND (city.meta_key = '_rpmcpt_listing_location' AND city.meta_value = '%s')",
@@ -1146,9 +1144,7 @@ function rpmcpt_listing_sort_function(){
         
             $ajax_join_clause .= "LEFT JOIN $wpdb->postmeta AS type
                                   ON ($wpdb->posts.ID = type.post_id) ";    
-
             $query_type = $query_params[ 'type' ];
-
             //used to sanitize the user input to prevent injection
             $ajax_where_clause .= $wpdb->prepare(   
                                                     " AND (type.meta_key = '_rpmcpt_listing_type' AND type.meta_value = '%s')",
@@ -1160,7 +1156,6 @@ function rpmcpt_listing_sort_function(){
         
             $ajax_join_clause .= "LEFT JOIN $wpdb->postmeta AS bedrooms
                                   ON ($wpdb->posts.ID = bedrooms.post_id) ";    
-
             $query_bedrooms = $query_params[ 'bedrooms' ];
         
             //used to sanitize the user input to prevent injection
@@ -1174,7 +1169,6 @@ function rpmcpt_listing_sort_function(){
         
             $ajax_join_clause .= "LEFT JOIN $wpdb->postmeta AS bathrooms
                                   ON ($wpdb->posts.ID = bathrooms.post_id) ";    
-
             $query_bathrooms = $query_params[ 'bathrooms' ];
         
             //used to sanitize the user input to prevent injection
@@ -1194,6 +1188,9 @@ function rpmcpt_listing_sort_function(){
                             "AND $wpdb->posts.post_type = 'listing'
                             AND ($wpdb->posts.post_status = 'publish'
                             OR $wpdb->posts.post_status = 'private') ";
+        
+        //removed to test display of private posts
+        //OR $wpdb->posts.post_status = 'private') 
             
             //$str = $filter_type_string ;
         $filter_type_string = $_POST['value'];
@@ -1344,3 +1341,5 @@ function custom_flush_rules(){
 	flush_rewrite_rules();
 }
 add_action('after_theme_switch', 'custom_flush_rules');
+
+

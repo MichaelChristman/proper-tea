@@ -47,12 +47,7 @@
 		<?php elseif ( is_search() ) : ?>
 
 			<p><?php esc_html_e( 'Sorry, but nothing matched your search terms. Please try again with some different keywords or check out our newest listings.', 'proper-tea' ); ?></p>
-			<div id="listing-search" class = "main-search">
-                            <button class="search-toggle" aria-controls="rpmcpt_search_form" aria-expanded="false"><?php esc_html_e( 'Search', 'proper-tea' ); ?></button>
-
-
-                        
-                        </div> <!-- .listing-search -->
+			
                   
                 <?php elseif ( is_404() ) : ?>
                         

@@ -74,7 +74,7 @@ get_header(); ?>
                                 get_template_part( 'template-parts/content', 'listing-archive' );
 
 			endwhile;
-			the_posts_navigation();
+//			the_posts_navigation();
                         ?>
                         </section>
                         <?php

@@ -105,6 +105,20 @@ function proper_tea_widgets_init() {
 		'before_title'  => '<h2 class="widget-title">',
 		'after_title'   => '</h2>',
 	) );
+        
+        /**
+        *  Add widget area to allow for residents log in
+        * 
+        * 
+        */
+        register_sidebar( array(
+		'name'          => 'Residents Login Area',
+		'id'            => 'residents_login_1',
+		'before_widget' => '<div>',
+		'after_widget'  => '</div>',
+		'before_title'  => '<h2 class="login-form-title">',
+		'after_title'   => '</h2>',
+	) );
 }
 add_action( 'widgets_init', 'proper_tea_widgets_init' );
 
@@ -117,12 +131,14 @@ function proper_tea_scripts() {
         //Add Google Fonts: Montserrat and Rubik
         wp_enqueue_style('proper-tea-local-fonts',get_template_directory_uri() .'/fonts/custom-fonts.css'  );
         
-        //wp_enqueue_script( 'proper-tea-fontawesome','https://use.fontawesome.com/6088d0f9a1.js' );
+        wp_enqueue_style( 'proper-tea-fontawesome','https://use.fontawesome.com/releases/v5.8.1/css/all.css' );
         
         //load jquery
         wp_enqueue_script('jquery', get_template_directory_uri() .'/js/jquery-3.1.1.js');
         
         wp_enqueue_script('proper-tea-functions', get_template_directory_uri() .'/js/functions.js', ['jquery'],'20170725', true);
+        
+        wp_enqueue_script('proper-tea-listing-carousel', get_template_directory_uri() .'/js/listing-carousel.js', ['jquery'],'20190122', true);
         
         wp_register_script('proper_tea_price_sort',get_template_directory_uri() .'/js/priceSort.js', ['jquery'],'20170808', true);
         wp_enqueue_script('proper_tea_price_sort', get_template_directory_uri() .'/js/priceSort.js', ['jquery'],'20170808', true);
@@ -136,7 +152,7 @@ function proper_tea_scripts() {
         
         wp_enqueue_script('proper-tea-viewportSize', get_template_directory_uri() .'/js/viewportSize.js', ['jquery'],'20170414', true);
         
-	wp_enqueue_script( 'proper-tea-navigation', get_template_directory_uri() . '/js/navigation.js', ['jquery'], '20151215', true );
+	wp_enqueue_script( 'proper-tea-navigation', get_template_directory_uri() . '/js/navigation.js', ['jquery'], '20190326', true );
         wp_localize_script( 'proper-tea-navigation', 'screenReaderText', array(
 		'expand'   => '<span class="screen-reader-text">' . __( 'expand child menu', 'proper-tea' ) . '</span>',
 		'collapse' => '<span class="screen-reader-text">' . __( 'collapse child menu', 'proper-tea' ) . '</span>',
@@ -152,6 +168,18 @@ function proper_tea_scripts() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'proper_tea_scripts' );
+
+//add featured gallery support for listings
+function proper_tea_add_featured_galleries_to_listings( $postTypes ) {
+
+    array_push($postTypes, 'listing' );
+
+    return $postTypes;
+
+}
+
+add_filter('fg_post_types', 'proper_tea_add_featured_galleries_to_listings' );
+
 
 
 

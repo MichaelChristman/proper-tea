@@ -10,7 +10,7 @@
 //get viewport width
 var vpWidth = viewportSize.getWidth();
 
-var container, button, menu, links, subMenus, searchContainer, searchButton, searchMenu, moreFiltersButton, moreFilters, i, len;
+var container, button, menu, links, subMenus, searchContainer, searchButton, searchMenu, accountContainer, accountButton, accountMenu, moreFiltersButton, moreFilters, i, len;
 
 
 /*
@@ -61,6 +61,8 @@ searchMenu = searchContainer.getElementsByTagName('div')[1];
 //    return;
 //}
 
+
+
 searchMenu.setAttribute( 'aria-expanded', 'false' );
 if ( -1 === searchMenu.className.indexOf( 'prop-search-menu' ) ){
     searchMenu.className += ' prop-search-menu';
@@ -72,8 +74,30 @@ moreFilters = searchContainer.querySelector('.more-filters-wrap');
 //    moreFilters[i].className += ' bordello';
 //}
 
+//var moreFiltersIcon = $("<i class='fa fa-plus'></i>"); 
+var moreFiltersIcon = document.createElement("i");
+moreFiltersIcon.classList.add("fa");
+moreFiltersIcon.classList.add("fa-plus");
+moreFiltersButton.append(moreFiltersIcon);
+
+/*
+ * Assign Account Menu Variables
+ */
+accountContainer = document.getElementById( 'site-navigation' );
+
+accountButton = accountContainer.getElementsByTagName( 'button' )[2];
+
+accountMenu = document.getElementsByClassName('account-navigation-menu')[0];
+
+if ( -1 === accountMenu.className.indexOf( 'nav-menu' ) ) {
+        accountMenu.className += ' nav-menu';
+}
 
 
+/*
+ * function for main navigation
+ * 
+ */
 ( function( $ ) {
 //	var container, button, menu, links, subMenus, searchContainer, searchButton, searchMenu, i, len;
 
@@ -108,11 +132,25 @@ moreFilters = searchContainer.querySelector('.more-filters-wrap');
                             searchButton.setAttribute('aria-expanded', 'false');
                             searchMenu.setAttribute('aria-expanded', 'false');
                         }
+                        
+                        /*
+                        * If account is open close it
+                        */
+                       if ( -1 !== accountMenu.className.indexOf( 'toggled' ) ) {
+                               accountMenu.className = accountMenu.className.replace( ' toggled', '' );
+                               accountButton.setAttribute( 'aria-expanded', 'false' );
+                               accountMenu.setAttribute( 'aria-expanded', 'false' );
+
+                       }
 		}
 	};
         
-        
-       
+       $searchSubmit = $('.rpmcptselectbox.submit').find('input.button');
+       if (vpWidth >= 800)  {
+            //swap the search icon
+           $searchSubmit.val('\uf002');
+       }
+      
         
         $(window).resize(function(){
             
@@ -137,19 +175,26 @@ moreFilters = searchContainer.querySelector('.more-filters-wrap');
 		}
                 
                 /*
+                 * Change the value of the search input
+                 */
+                $searchSubmit.val('\uf002');
+                
+                
+                 /*
                  * If search is opened close it
                  */
-                if( searchContainer !== null && -1 !== searchMenu.className.indexOf('toggled')){
-                   
-                    searchMenu.className = searchMenu.className.replace(' toggled','');
-                    searchButton.setAttribute('aria-expanded', 'false');
-                    searchMenu.setAttribute('aria-expanded', 'true');
-                   
-                }
+//                if( searchContainer !== null && -1 !== searchMenu.className.indexOf('toggled')){
+//                   
+//                    searchMenu.className = searchMenu.className.replace(' toggled','');
+//                    searchButton.setAttribute('aria-expanded', 'false');
+//                    searchMenu.setAttribute('aria-expanded', 'true');
+//                   
+//                }
                 
             }else{
                 menu.setAttribute( 'aria-expanded', 'false' );
-                searchMenu.setAttribute('aria-expanded', 'false');
+//                searchMenu.setAttribute('aria-expanded', 'false');
+                $searchSubmit.val('Search');
             }
                 
         });
@@ -263,6 +308,11 @@ moreFilters = searchContainer.querySelector('.more-filters-wrap');
         
 } )( jQuery );
 
+/*
+ * Function for Search navigation
+ * 
+ */
+
 ( function( $ ) {
     
 //    var  searchContainer, searchButton, searchMenu;
@@ -282,48 +332,38 @@ moreFilters = searchContainer.querySelector('.more-filters-wrap');
             }else{
                 //open it
                 searchMenu.className += ' toggled';
-//                searchContainer.className += ' toggled';
+    //                searchContainer.className += ' toggled';
                 searchButton.setAttribute('aria-expanded', 'true');
                 searchMenu.setAttribute('aria-expanded', 'true');
-                
+
                 /*
                  * If Nav is open close it
                  */
                 if ( -1 !== menu.className.indexOf( 'toggled' ) ) {
-                        
-//                        container.className = container.className.replace( ' toggled', '' );
-			menu.className = menu.className.replace( ' toggled', '' );
-			button.setAttribute( 'aria-expanded', 'false' );
-			menu.setAttribute( 'aria-expanded', 'false' );
-                          
-		}
+
+    //                        container.className = container.className.replace( ' toggled', '' );
+                        menu.className = menu.className.replace( ' toggled', '' );
+                        button.setAttribute( 'aria-expanded', 'false' );
+                        menu.setAttribute( 'aria-expanded', 'false' );
+
+                }
+
+                /*
+                 * If account is open close it
+                 */
+                if ( -1 !== accountMenu.className.indexOf( 'toggled' ) ) {
+                        accountMenu.className = accountMenu.className.replace( ' toggled', '' );
+                        accountButton.setAttribute( 'aria-expanded', 'false' );
+                        accountMenu.setAttribute( 'aria-expanded', 'false' );
+
+                }
                 
                 
             }
         };
         
-//        var position, direction, previous;
-//        
-//        $(window).scroll(function(){
-//            if( $(this).scrollTop() >= position ){
-//                direction = 'down';
-//                if( direction !== previous ){
-//                    
-//                    $('.search-toggle').addClass('hide');
-//                    
-//                    previous = direction;
-//                }
-//            }else {
-//                direction = 'up';
-//                if( direction !== previous ){
-//                    
-//                    $('.search-toggle').removeClass('hide');
-//                    
-//                    previous = direction;
-//                }
-//            }
-//            position = $(this).scrollTop();
-//        });
+        
+        
     
     
 } )( jQuery );
@@ -331,25 +371,103 @@ moreFilters = searchContainer.querySelector('.more-filters-wrap');
 
 ( function( $ ) {
     
-    moreFiltersButton.onclick = function() {
+    moreFiltersButton.onclick = function(e) {
+        e.preventDefault;
         //if more filters is open
         if( -1 !== moreFilters.className.indexOf('toggled')){
             //close it
             moreFilters.className = moreFilters.className.replace(' toggled','');
             moreFiltersButton.className = moreFiltersButton.className.replace(' toggled','');
             
+            moreFiltersButton.closest('.listing-search-primary-container').className = moreFiltersButton.closest('.listing-search-primary-container').className.replace(' expanded','');
+            moreFiltersButton.closest('.listing-search-primary-container').setAttribute( 'aria-expanded', 'false' );
         }else{
             //open it
             moreFilters.className += ' toggled';
             moreFiltersButton.className += ' toggled';
             
-        }
             
+            //add expanded class to parent's parent
+            moreFiltersButton.closest('.listing-search-primary-container').className += ' expanded';
+            moreFiltersButton.closest('.listing-search-primary-container').setAttribute( 'aria-expanded', 'true' );
+            
+           /*
+            * If account is open close it
+            */
+            if ( -1 !== accountMenu.className.indexOf( 'toggled' ) ) {
+                    accountMenu.className = accountMenu.className.replace( ' toggled', '' );
+                    accountButton.setAttribute( 'aria-expanded', 'false' );
+                    accountMenu.setAttribute( 'aria-expanded', 'false' );
+
+            }
+        }
+          
         
     }
     
 } )( jQuery );
 
+/*
+ * Account Navigation menu toggle
+ */
+
+( function( $ ) {
+
+        
+	accountButton.onclick = function() {
+                /*
+                 * If The menu button is clicked and has toggled class
+                 */
+		if ( -1 !== accountMenu.className.indexOf( 'toggled' ) ) {
+                        
+                        //close it
+			accountMenu.className = accountMenu.className.replace( ' toggled', '' );
+//                        container.className =  container.className.replace( ' toggled', '' );
+			accountButton.setAttribute( 'aria-expanded', 'false' );
+			accountMenu.setAttribute( 'aria-expanded', 'false' );
+                          
+		} else {
+                        
+                        //open it
+			accountMenu.className += ' toggled';
+//                        container.className += ' toggled';
+			accountButton.setAttribute( 'aria-expanded', 'true' );
+			accountMenu.setAttribute( 'aria-expanded', 'true' );
+                        
+                        /*
+                         * If search is opened close it
+                         */
+                        if( -1 !== searchMenu.className.indexOf('toggled')){
+                            searchMenu.className = searchMenu.className.replace(' toggled','');
+                            searchButton.setAttribute('aria-expanded', 'false');
+                            searchMenu.setAttribute('aria-expanded', 'false');
+                        }
+                        
+                        /*
+                        * If Nav is open close it
+                        */
+                       if ( -1 !== menu.className.indexOf( 'toggled' ) ) {
+                               menu.className = menu.className.replace( ' toggled', '' );
+                               button.setAttribute( 'aria-expanded', 'false' );
+                               menu.setAttribute( 'aria-expanded', 'false' );
+                       }
+                       
+                       
+                       /*
+                        * If more filters are open 
+                        */
+                       if( -1 !== moreFilters.className.indexOf('toggled')){
+                            //close them
+                            moreFilters.className = moreFilters.className.replace(' toggled','');
+                            moreFiltersButton.className = moreFiltersButton.className.replace(' toggled','');
+
+                            moreFiltersButton.closest('.listing-search-primary-container').className = moreFiltersButton.closest('.listing-search-primary-container').className.replace(' expanded','');
+                            moreFiltersButton.closest('.listing-search-primary-container').setAttribute( 'aria-expanded', 'false' );
+                        }
+		}
+	};
+        
+} )( jQuery );
 
 ( function( $ ) {
         var position, direction, previous;

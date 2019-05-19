@@ -181,7 +181,7 @@ get_header(); ?>
 
                                 <div class="current-residents-sub-section-content-wrap">
                                     
-                                    <a href="<?php echo site_url('/residentinfo/');?>" tabindex="0">
+                                    <a href="<?php echo site_url('/current-residents/');?>" tabindex="0">
                                         <button>
                                             Information
                                         </button>
