@@ -63,7 +63,7 @@ function rpmcpt_custom_post_types() {
         'show_in_nav_menus'  => true,
         'menu_position'      => 4,
         'menu_icon'          => 'dashicons-store',
-        'rewrite'            => array('slug'=> 'listing'),
+        'rewrite'            => array('slug'=> 'listing','pages'=> true),
         'capability_type'    => 'post',
         'has_archive'        => true,
         'hierarchical'       => false,
@@ -297,7 +297,7 @@ function rpmcpt_listing_details_meta_box($post){
     $rpmcpt_listing_availability = get_post_meta( $post->ID, '_rpmcpt_listing_availability', true);
     $rpmcpt_listing_bedrooms = get_post_meta( $post->ID, '_rpmcpt_listing_bedrooms', true);
     $rpmcpt_listing_bathrooms = get_post_meta( $post->ID, '_rpmcpt_listing_bathrooms', true);
-    
+    $rpmcpt_listing_resident = get_post_meta( $post->ID, '_rpmcpt_listing_resident', true);
 //    $checkboxMeta = get_post_meta( $post->ID );
    
     
@@ -363,7 +363,32 @@ function rpmcpt_listing_details_meta_box($post){
         3+ <input id="bathrooms" type="radio" name = "bathrooms" value = "3" <?php echo ($rpmcpt_listing_bathrooms == '3')? 'checked="checked"':''; ?>/> 
     </p>
     
+    <!--resident-drop-down-->
     <?php
+    // Array of WP_User objects.
+    $residentNames = get_users( [ 'role__in' => ['resident'] ] );
+//    var_dump($rpmcpt_listing_resident);
+    $allResidents = [];
+    foreach ( $residentNames as $user ) {
+        array_push($allResidents, esc_html( $user->display_name ));
+    }
+    asort($allResidents);
+    
+    echo '<p class = "rpmcpt_meta_option rpmcpt_meta_dropdown" id ="resident_dropdown">';
+    echo '<label for="resident">'.__('Current Resident','rpm-custom-post-types').'</label> </br>';
+    echo '<select name = "resident">';
+    echo '<option value="" selected="selected">' . __( 'Current Resident', 'rpm-custom-post-types' ) . '</option>';
+    foreach ( $allResidents as $name ) {
+//        echo '<span>' . esc_html( $user->display_name ) . '</span>';
+        echo '<option value="' . $name . '"';
+        echo ($rpmcpt_listing_resident == $name)? ' selected>':'>';
+        echo ''.$name.'';
+        echo '</option>';
+    }
+    echo '</select>';
+    echo '</p>';
+    
+    
     echo '</form>';
 }
 
@@ -469,6 +494,14 @@ function rpmcpt_save_meta_boxes($post_id){
     $bed_allowed = array('0','1','2','3','4');
     $bath_allowed = array('1','2','3');
     
+    $residentNames = get_users( [ 'role__in' => ['resident'] ] );
+    $resident_allowed = [];
+    foreach ( $residentNames as $user ) {
+        $name = esc_html( $user->display_name );
+        array_push($resident_allowed, $name);
+    }
+    
+    
     if( isset( $_POST['listing_type'] )  && in_array($_POST['listing_type'],  $type_allowed)){
 
         update_post_meta( $post_id, '_rpmcpt_listing_type',  $_POST['listing_type'] );
@@ -490,6 +523,12 @@ function rpmcpt_save_meta_boxes($post_id){
     if( isset( $_POST['bathrooms'] )  && in_array($_POST['bathrooms'], $bath_allowed)){
 
         update_post_meta( $post_id, '_rpmcpt_listing_bathrooms',  $_POST['bathrooms'] );
+
+    }
+    
+    if( isset( $_POST['resident'] )  && in_array($_POST['resident'], $resident_allowed)){
+
+        update_post_meta( $post_id, '_rpmcpt_listing_resident',  $_POST['resident'] );
 
     }
 
@@ -554,6 +593,7 @@ add_filter('query_vars','rpmcpt_register_query_vars');
 function rpmcpt_setup(){
     add_shortcode('rpmcpt_search_form' , 'rpmcpt_search_form');
     add_shortcode('rpmcpt_listing_filter', 'rpmcpt_listing_filter_form');
+    add_shortcode('rpmcpt_more_listings_button', 'rpmcpt_more_listings_button');
 }
 add_action( 'init', 'rpmcpt_setup' );
 
@@ -574,13 +614,6 @@ function rpmcpt_search_form(){
         return;
     }
     
-    //If not on the front page
-//    if(!is_front_page()){
-//        //create class for hiding drop downs
-//        $more_filters = "more-filters";       
-//    }else{
-//        $more_filters = "";
-//    }
 
     /*
      * Build the search form
@@ -668,26 +701,6 @@ function get_meta_values( $key = '', $type = 'post', $status = 'publish' ) {
 
     return $r;
 }
-
-
-
-//add_action('pre_get_posts','rpmcpt_reset_blank_querey',1);
-
-
-//add_action( 'posts_where_request', 'rpmcpt_fields_search' );    
-
-
-//function rpmcpt_fields_search($where) {
-//      if(is_search()){
-//            global $wpdb, $wp;
-//           
-//            add_filter( 'posts_join_request', 'search_join' );
-//            add_filter( 'posts_distinct_request', 'search_distinct' );
-//            add_filter( 'posts_request', 'rpmcpt_posts_request_filter' );
-//              
-//      }
-//    return $where;
-//}
 
 add_action('pre_get_posts','rpmcpt_filter_mysql',1);
 
@@ -1011,13 +1024,16 @@ function rpmcpt_listing_search_template_override($template){
 }
 add_filter('template_include', 'rpmcpt_listing_search_template_override');
 
-/*
+
+/**********************************************************************
+ *
  * Add listing filter shordcode
- */
+ * 
+ ***********************************************************************/
 function rpmcpt_listing_filter_form(){
     
     $select_element  = '<select name = "listing-filter">';
-    $select_element .= '<option value = "" selected = "selected">'.__( 'Sort By' , 'rpm-custom-post-types' ).'</option>';
+    $select_element .= '<option selected = "selected">'.__( 'Sort By' , 'rpm-custom-post-types' ).'</option>';
     $select_element .= '<option value="ASC">'.__('Price Ascending','rpm-custom-post-types').'</option>';
     $select_element .= '<option value="DESC">'.__('Price Descending','rpm-custom-post-types').'</option>';
     $select_element .= '<option value="newest">'.__('Newest','rpm-custom-post-types').'</option>';
@@ -1027,7 +1043,7 @@ function rpmcpt_listing_filter_form(){
     $filter_form  = '<form action="' .esc_url( home_url() ).'/wp-admin/admin-ajax.php" method="POST" id="listing-filter">';
     $filter_form .= '<div class= "rpmcpt-filter-selectbox">'.$select_element.'</div>';
 //    $filter_form .= '<input type="hidden" name="post_type" value="listing" />';
-    $filter_form .= '<button>Sort</button>';
+    $filter_form .= '<button>'.__('Sort','rpm-custom-post-types').'</button>';
     $filter_form .= '<input type="hidden" name="action" value="myfilter">';
     $filter_form .= '</form>';
     $filter_form .= '<div id="response"></div>';
@@ -1035,14 +1051,8 @@ function rpmcpt_listing_filter_form(){
     return $filter_form;
 }
 
-add_action('wp_ajax_myfilter', 'rpmcpt_listing_sort_function'); 
-add_action('wp_ajax_nopriv_myfilter', 'rpmcpt_listing_sort_function');
-function rpmcpt_listing_sort_function(){
-    global $wpdb;
-    $search_params = $_POST;
+function rpmcpt_get_sql_string($wpdb,$search_params){
     
-    if( count($search_params['query']) > 1 && !is_search_filter_blank($search_params['query'])){
-        
         $ajax_select_clause = "SELECT DISTINCT $wpdb->posts.*
                                FROM $wpdb->posts ";
         
@@ -1186,19 +1196,24 @@ function rpmcpt_listing_sort_function(){
         $ajax_where_clause = "WHERE 1=1 "
                             . $ajax_where_clause .
                             "AND $wpdb->posts.post_type = 'listing'
-                            AND ($wpdb->posts.post_status = 'publish'
-                            OR $wpdb->posts.post_status = 'private') ";
+                            AND $wpdb->posts.post_status = 'publish'";
+        
+        //OR $wpdb->posts.post_status = 'private')
         
         //removed to test display of private posts
         //OR $wpdb->posts.post_status = 'private') 
             
             //$str = $filter_type_string ;
-        $filter_type_string = $_POST['value'];
-        //get the filter type 
-        $matches = array();
-        preg_match('/listing-filter=(.*)\&action/', $filter_type_string , $matches);
-        //var_dump($matches[1]); // $m[1] is your string
-        $filter_type = $matches[1];
+//        $filter_type_string = $_POST['value'];
+////        var_dump($filter_type_string);
+//        
+//        //get the filter type 
+//        $matches = array();
+//        preg_match('/listing-filter=(.*)\&action/', $filter_type_string , $matches);
+//        //var_dump($matches[1]); // $m[1] is your string
+//        $filter_type = $matches[1];
+        
+        $filter_type = $_POST['value'];
 
         switch($filter_type){
             //price ascending
@@ -1218,21 +1233,46 @@ function rpmcpt_listing_sort_function(){
 
                 break;
         }
-
+ 
         $sql_string = $ajax_select_clause . $ajax_join_clause . $ajax_where_clause . $ajax_orderby_clause;
 //            echo"<p>$sql_string</p>";
-        $ajax_page_posts = $wpdb->get_results($sql_string, OBJECT);
+        return $sql_string;
+}
 
-//            var_dump($ajax_page_posts);
+add_action('wp_ajax_myfilter', 'rpmcpt_listing_sort_function'); 
+add_action('wp_ajax_nopriv_myfilter', 'rpmcpt_listing_sort_function');
+function rpmcpt_listing_sort_function(){
+    global $wpdb;
+    $search_params = $_POST;
+//    var_dump($search_params);
+    if( count($search_params['query']) > 1 && !is_search_filter_blank($search_params['query'])){
+        $new_sql_string = rpmcpt_get_sql_string($wpdb,$search_params);
+        $ajax_page_posts = $wpdb->get_results($new_sql_string, OBJECT);
+        $count_results = count($ajax_page_posts);
+        
+        $ajax_limit_clause = " LIMIT 0, 10";
+        
+        $new_sql_string .= $ajax_limit_clause;
+        $ajax_page_posts_ammended = $wpdb->get_results($new_sql_string, OBJECT);
+        
 
-        if($ajax_page_posts){
+//        var_dump($ajax_page_posts);
+
+        if($ajax_page_posts_ammended){
             global $post;
+            
+            $results_html = '';
+            ob_start();
 
-            foreach($ajax_page_posts as $post){
+            foreach($ajax_page_posts_ammended as $post){
 
                 setup_postdata($post);
                 get_template_part( 'template-parts/content', 'listing-archive' );
             }
+            
+            //"Save" results' HTML as variable
+            $results_html = ob_get_contents();
+            ob_end_clean();
         }else{
             ?>
             <h2 class="center">Not Found</h2>
@@ -1244,6 +1284,7 @@ function rpmcpt_listing_sort_function(){
         
         $args = [
                     'post_type' => 'listing',
+                    'post_status' => ['publish'],
                     'suppress_filters' => true,
                     'orderby' => 'meta_value_num',
                     'meta_query' => [
@@ -1253,13 +1294,8 @@ function rpmcpt_listing_sort_function(){
                                      ]
                 ];
         
-        //$str = $filter_type_string ;
-        $filter_type_string = $_POST['value'];
-        //get the filter type 
-        $matches = array();
-        preg_match('/listing-filter=(.*)\&action/', $filter_type_string , $matches);
-        //var_dump($matches[1]); // $m[1] is your string
-        $filter_type = $matches[1];
+
+        $filter_type = $_POST['value'];
         
         switch($filter_type){
             //price ascending
@@ -1281,12 +1317,23 @@ function rpmcpt_listing_sort_function(){
         }
         
         $query = new WP_Query($args);
+        
+        
        
         if( $query->have_posts() ) :
+                
+                $count_results = $query->found_posts;
+
+                //Start "saving" results' HTML
+                $results_html = '';
+                ob_start();
+            
                 while( $query->have_posts() ): $query->the_post();
                         get_template_part( 'template-parts/content', 'listing-archive' );
 
                 endwhile;
+                //"Save" results' HTML as variable
+                $results_html = ob_get_clean();  
 
         else :
                 echo 'No posts found';
@@ -1294,6 +1341,15 @@ function rpmcpt_listing_sort_function(){
         wp_reset_postdata();
 
     }
+    
+    $response = array();
+
+    //1. value is HTML of new posts and 2. is total count of posts
+
+    array_push ( $response, $results_html, $count_results );
+//    $json_encoded = json_encode($response);
+
+    echo json_encode( $response );
     
 
     die();
@@ -1331,6 +1387,189 @@ function is_search_filter_blank($query){
     return $is_the_filter_blank;
 }
 
+/**********************************************************************
+ *
+ * Add more listings button shordcode
+ * 
+ ***********************************************************************/
+function rpmcpt_more_listings_button(){
+    
+    $more_listings_button = '<button id="more-listings-button">'.__('More Listings','rpm-custom-post-types').'</button>';
+    $more_listings_button .= '<input type="hidden" name="action" value="morelistings">';
+    return $more_listings_button;
+}
+
+
+/**********************************************************************
+ *
+ * Create pagination for listing post type
+ * 
+ ***********************************************************************/
+
+
+add_action('wp_ajax_morelistings', 'rpmcpt_more_listings');
+add_action('wp_ajax_nopriv_morelistings', 'rpmcpt_more_listings');
+
+function rpmcpt_more_listings() {
+    global $wpdb;
+    $search_params = $_POST;
+    
+    
+    if( count($search_params['query']) > 1 && !is_search_filter_blank($search_params['query'])){
+        
+        $new_sql_string = rpmcpt_get_sql_string($wpdb,$search_params);
+        $ajax_page_posts = $wpdb->get_results($new_sql_string, OBJECT);
+        $count_results = count($ajax_page_posts);
+        
+        
+        $listing_offset = $search_params['offset'];
+        //need to add limit clause to keep post number consistent
+        if( ! empty( $listing_offset )){
+             $ajax_limit_clause = " LIMIT $listing_offset, 10";
+        }
+        
+        $new_sql_string .= $ajax_limit_clause;
+        $ajax_page_posts_ammended = $wpdb->get_results($new_sql_string, OBJECT);
+
+
+        if($ajax_page_posts_ammended){
+            global $post;
+            
+            $results_html = '';
+            ob_start();
+            
+            foreach($ajax_page_posts_ammended as $post){
+
+                setup_postdata($post);
+                get_template_part( 'template-parts/content', 'listing-archive' );
+            }
+            
+            //"Save" results' HTML as variable
+            $results_html = ob_get_contents();
+            ob_end_clean();
+            
+        }else{
+            ?>
+            <h2 class="center">Not Found</h2>
+            <p class="center">Sorry, but you are looking for something that is not here.</p>
+            <?php
+        }
+    }else{
+        $listing_offset = $_POST['offset'];
+        $filter_type = $_POST['value'];
+
+        //Build query
+        $args = [
+                    'post_type' => 'listing',
+                    'post_status' => ['publish'],
+                    'suppress_filters' => true,
+                    'orderby' => 'meta_value_num',
+                    'meta_query' => [
+                                         ['key' => '_rpmcpt_listing_price',
+                                          'type' => 'NUMERIC'
+                                         ]
+                                     ]
+                ];
+
+        //Get offset
+        if( ! empty(  $listing_offset ) ) {
+
+            $args['offset'] =  $listing_offset;
+    //        var_dump($_POST);
+    //        $args['paged'] = '2';
+
+            //Also have to set posts_per_page, otherwise offset is ignored
+            $args['posts_per_page'] = 10;
+        }
+        
+        switch($filter_type){
+            //price ascending
+            case 'ASC':
+                $args['order']= 'ASC';
+//                var_dump($args);          
+                break;
+            //price descending
+            case 'DESC' :
+                $args['order']= 'DESC';
+//                var_dump($args);
+                break;
+                
+            //no sort selected
+            default : 
+                $args['orderby']= 'post_date';
+                
+                break;
+        }
+
+        $count_results = '0';
+
+        $query_results = new WP_Query( $args );
+
+
+        if ( $query_results->have_posts() ) {
+
+            $count_results = $query_results->found_posts;
+
+            //Start "saving" results' HTML
+            $results_html = '';
+            ob_start();
+
+            while ( $query_results->have_posts() ) { 
+
+                $query_results->the_post();
+
+                //Your single post HTML here
+                get_template_part( 'template-parts/content', 'listing-archive' );
+            }    
+
+            //"Save" results' HTML as variable
+            $results_html = ob_get_clean();  
+
+        }
+        wp_reset_postdata();
+        
+        
+    }
+    //Build ajax response
+    $response = array();
+
+    //1. value is HTML of new posts and 2. is total count of posts
+
+    array_push ( $response, $results_html, $count_results );
+//    $json_encoded = json_encode($response);
+
+    echo json_encode( $response );
+    
+    //Always use die() in the end of ajax functions
+    die(); 
+}
+
+//add_action( 'pre_get_posts', 'rpmcpt_paginate_listing_archive' );
+//function rpmcpt_paginate_listing_archive( $query ) {
+//if( $query->is_main_query() && !is_admin() && is_post_type_archive( 'listing' ) ) {
+//		$query->set( 'posts_per_page', '4' );
+//	}
+//
+//}
+//function pagination_bar( $custom_query ) {
+//    
+////    var_dump($custom_query);
+//
+//    $total_pages = $custom_query->max_num_pages;
+//    $big = 999999999; // need an unlikely integer
+//    
+//    
+//    if ($total_pages > 1){
+//        $current_page = max(1, get_query_var('paged'));
+//
+//        echo paginate_links(array(
+//            'base' => str_replace( $big, '%#%', esc_url( get_pagenum_link( $big ) ) ),
+//            'format' => '?paged=%#%',
+//            'current' => $current_page,
+//            'total' => $total_pages,
+//        ));
+//    }
+//}
 
 //runs only when the theme is set up
 function custom_flush_rules(){

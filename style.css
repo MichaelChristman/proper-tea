@@ -30,6 +30,7 @@ Nicolas Gallagher and Jonathan Neal http://necolas.github.com/normalize.css/
         ## Listing Search Form
         ## More Information Contact Form
         ## Contact Us Page Form
+        ## MCS Pay Rent Form
 # Navigation
 	## Links
 	## Menus
@@ -48,6 +49,9 @@ Nicolas Gallagher and Jonathan Neal http://necolas.github.com/normalize.css/
                 #### Archive Styling
             ### Information Page Template Styling
             ### Login Page Template Styling
+            ### Register Page Template Styling
+            ### My Account Page Template Styling
+            ### Pay Rent Page Template Styling
 	## Comments
        
 # Footer
@@ -546,7 +550,7 @@ textarea {
 .listing-filter-primary-container{
     text-align: right;
     padding: 0.6rem;
-    margin-top: 1rem;
+    margin:0;
     background-color: #000;
 }
 
@@ -688,6 +692,7 @@ textarea {
 
 @media screen and (min-width:68.75em){
     .post-type-archive-listing .listing-search-primary-container{
+        position: absolute;
         width:calc(34% - 15px);
         max-width:530px;
         margin: 0 5px 0 10px;
@@ -1221,17 +1226,21 @@ textarea {
 }
 
 .listing-search-primary-container input.button{
-    color:#fff;
+    color:#000000;
     /*height: 33px;*/
-    border:2px solid #fff;
+    border: 1px solid #000000;
+    background-color: #ffffff;
     width:100%;
-
+    padding:1.25em 0;
+    margin:0 auto;
+    text-align: center;
 }
 
 .listing-search-primary-container input.button:hover,
 .listing-search-primary-container input.button:focus,
 .listing-search-primary-container input.button:active{
-    color:#000;
+    color:#ffffff;
+    background-color:#000000;
 }
 
 
@@ -1249,6 +1258,7 @@ textarea {
         font-family: "Font Awesome 5 Free";
         font-size:0.8rem;
         font-weight: 900;
+        color:#ffffff;
         /*        line-height: 1.5rem;*/
     }
     
@@ -1304,7 +1314,7 @@ textarea {
 div.rpmcptselectbox,
 div.rpmcpttextfield{
     margin: 1rem;
-    text-align:left;
+    /*text-align:left;*/
 }
 
 @media screen and (min-width:50em){
@@ -1690,6 +1700,19 @@ button.search-toggle:focus{
 }*/
 
 /*--------------------------------------------------------------
+## MCS Pay Rent Form
+--------------------------------------------------------------*/
+.mcs-payment-form input{
+    color:#333333;
+}
+
+.mcs-payment-form input:hover,
+.mcs-payment-form input:active,
+.mcs-payment-form input:focus{
+    color:#333333;
+}
+
+/*--------------------------------------------------------------
 # Navigation
 --------------------------------------------------------------*/
 /*--------------------------------------------------------------
@@ -1773,7 +1796,7 @@ a:active {
 
 .main-navigation a {
     display: block;
-    padding: 0.8em 1em;
+    padding: 1.25em 1em;
     position: relative;
     text-decoration: none;
     font-weight: 400;
@@ -1790,8 +1813,8 @@ a:active {
 }
 
 .main-navigation a,
-.main-navigation ul ul li:lastchild a{
-    border-bottom: 1px solid white;
+.main-navigation ul ul li:last-child a{
+    /*border-bottom: 1px solid white;*/
 }
 
 .main-navigation ul li:last-child a{
@@ -2085,7 +2108,7 @@ button.menu-toggle:focus{
     
     .nav-menu ul{
         /*max-height: none;*/
-        height: 50px;
+        /*height: 50px;*/
         padding-left: 0;
            
     }
@@ -2300,6 +2323,7 @@ button.account-navigation-toggle:active{
     margin:0;
     text-align: center;
     background-color: #333333;
+    border-top: 10px solid #eee;
 }
 
 @media screen and (min-width: 50em) {
@@ -2308,6 +2332,7 @@ button.account-navigation-toggle:active{
             top: 3rem;
             right: 0.5rem;
             width: calc(22% + 33px + 0.6em);
+            border:none;
             -moz-box-shadow: -3px 5px 3px #000000;
             -webkit-box-shadow: -3px 5px 3px #000000;
             box-shadow: -3px 5px 3px #000000;
@@ -2324,6 +2349,7 @@ button.account-navigation-toggle:active{
     font-size: 0.8em;
     text-align: right;
     background-color: #000;
+    
 }
 
 #account-navigation .account-navigation-menu ul{
@@ -2341,24 +2367,38 @@ button.account-navigation-toggle:active{
 
 #account-navigation .account-navigation-menu .account-log-in-link{
     display:inline-block;
-    border: 1px solid;
-    border-color: #fff;
-    border-radius: 0;
-    background: transparent;
-    color: #fff;
+    width: calc(100% - 2rem);
+    border: 1px solid #000000;
+    background-color: #ffffff;
+    color: #000000;
     font-family:'Montserrat', sans-serif;
-    font-size: 12px;
     font-size: 0.75rem;
+    font-weight: 400;
     line-height: 1;
-    padding: .6em 1em .4em;
-    margin:2em auto;
+    padding: 1.25em 0;
+    margin:5em auto;
+       
 }
+
+@media screen and (min-width: 50em) {
+    #account-navigation .account-navigation-menu .account-log-in-link{
+        /*margin:2em auto;*/
+    }
+}
+
 
 #account-navigation .account-navigation-menu .account-log-in-link:hover,
 #account-navigation .account-navigation-menu .account-log-in-link:focus,
 #account-navigation .account-navigation-menu .account-log-in-link:active{
-    background-color: #fff;
-    color:#333;
+    background-color: #000000;
+    color:#ffffff;
+}
+
+#account-navigation .account-navigation-menu a:hover,
+#account-navigation .account-navigation-menu a:focus,
+#account-navigation .account-navigation-menu a:active{
+    background: #fff;
+    color: #000;
 }
 
 /*--------------------------------------------------------------
@@ -2903,6 +2943,7 @@ made per mor10 tutorial */
 }
 
 .listing-sub-section-header p:nth-child(2n){
+    font-family: 'Rubik', sans-serif;
     font-weight: 300;
     position: absolute;
     font-size: 1.25rem;
@@ -3354,35 +3395,23 @@ made per mor10 tutorial */
 
 .rpm-front-page-wrap .team-sub-section a{
     display:block;
-    width:120px;
     margin:0 auto 1rem;
-/*    margin: 0 auto;
-    position: relative;
-    
-    display: -webkit-flex;
-    display: -ms-flexbox;
-    display: flex;
-
-    -webkit-flex-flow: column;
-    -ms-flex-flow: column;
-    flex-flow: column;  */
-    
-/*    align-items: center;
-    justify-content: center;*/
 }
 
 .rpm-front-page-wrap .team-sub-section a button{
-    border:1px solid #333;
-    padding:0.65em;
-    width:120px;
-    color:#333;
+    
+    padding: 1.25em;
+
+    color: #fff;
+    background-color: #404040;
+    border: 1px solid #232323;
 }
 
 .rpm-front-page-wrap .team-sub-section a button:hover,
 .rpm-front-page-wrap .team-sub-section a button:focus,
 .rpm-front-page-wrap .team-sub-section a button:active{
-    background-color: #333;
-    color:#fff;
+    background-color:#bbbbbb;
+    color:#232323;
 }
 
 @media screen and (min-width:50em){
@@ -3589,7 +3618,7 @@ made per mor10 tutorial */
 
 .rpm-front-page-wrap div.current-residents-sub-section-content-wrap a{
     display: block;
-    width: 100px;
+    /*width: 100px;*/
     margin: 3rem auto 0 auto;
     text-decoration: none;
 }
@@ -3597,11 +3626,10 @@ made per mor10 tutorial */
 
 .rpm-front-page-wrap .current-residents-sub-section-content-wrap button{
     display:block;
-    width: 100px;
-    padding:0.65em;
-    
-    
     text-align:center;
+    padding:1.25em;
+    margin:0 auto;
+    
 }
 /*
 @media screen and (min-width:50em){
@@ -3727,10 +3755,30 @@ made per mor10 tutorial */
     border:none;
 }
 
+.rpm-front-page-wrap .contact-sub-section-form-wrap form p input[type="submit"].wpcf7-submit{
+    width:100%;
+    font-size: 0.75rem;
+    font-weight: 400;
+    padding: 1.25em 0;
+    color: #fff;
+    background-color: #fff;
+    color:#000000;
+    border: 1px solid #000000;
+}
+
+.rpm-front-page-wrap .contact-sub-section-form-wrap form p input[type="submit"].wpcf7-submit:hover,
+.rpm-front-page-wrap .contact-sub-section-form-wrap form p input[type="submit"].wpcf7-submit:focus,
+.rpm-front-page-wrap .contact-sub-section-form-wrap form p input[type="submit"].wpcf7-submit:active{
+    background-color: #000000;
+    color:#ffffff;
+}
+
+
+
 .rpm-front-page-wrap .contact-sub-section-form-wrap form p:nth-child(7){
     
-    text-align: center;
-    padding-left:20px;
+/*    text-align: center;*/
+/*    padding-left:20px;*/
 }
 
 
@@ -3833,32 +3881,6 @@ div.rpm-team-member-archive-wrap .site-main,
         width:66%;
     }
       
-}
-
-/*--------------------------------------------------------------
-#### Archive Styling
---------------------------------------------------------------*/
-@media screen and (min-width: 50em){
-    
-    .rpm-listing-archive-wrap .site-main{
-        /*width:66%;*/
-        margin:0 auto 1.8em;
-    }
-
-}
-
-@media screen and (min-width: 68.75em){
-    .rpm-listing-archive-wrap .site-main{
-        width: calc(66% - 30px);
-        max-width: 1024px;
-        margin: 0 10px 1.8em calc(34% + 20px);
-    }
-}
-
-@media screen and (min-width: 100em){
-    .rpm-listing-archive-wrap .site-main{
-        margin: 0 10px 1.8em calc(50% - 234px);
-    }
 }
 
 /*************************************************
@@ -4058,9 +4080,16 @@ End Listing Post Type Styling
     margin: 0em;
 }
 
+
+
 @media screen and (min-width:50em){
     .rpm-listing-archive-wrap{
         margin: calc(50px + 1.5em) 0 0.5em;
+    }
+    
+    .rpm-listing-archive-wrap .site-main{
+        /*width:66%;*/
+        margin:0 auto 1.8em;
     }
     
     .rpm-team-member-archive-wrap,
@@ -4072,6 +4101,18 @@ End Listing Post Type Styling
 @media screen and (min-width: 68.75em){
     .rpm-listing-archive-wrap{
         margin: 10px 0 0.5em;
+    }
+    
+    .rpm-listing-archive-wrap .site-main{
+        width: calc(66% - 30px);
+        max-width: 1024px;
+        margin: 0 10px 1.8em calc(34% + 20px);
+    }
+}
+
+@media screen and (min-width: 100em){
+    .rpm-listing-archive-wrap .site-main{
+        margin: 0 10px 1.8em calc(50% - 234px);
     }
 }
 
@@ -4085,7 +4126,6 @@ div.related-listings-wrap article a{
     display:block;
 }
 
-
 @media screen and (min-width:31.25em){
     div.related-listings-wrap{
         text-align: center;
@@ -4094,6 +4134,11 @@ div.related-listings-wrap article a{
     div.related-listings-wrap article{
         display:inline-block;
         width:32%;  
+    }
+    
+    div.related-listings-wrap .continue-reading{
+        top: calc(50% - 23px);
+        right: calc(50% - 70px);
     }
     
 }
@@ -4114,13 +4159,12 @@ div.related-listings-wrap article a{
 .resident-info-archive-title,
 .not-found-archive-title,
 .four-o-four-archive-title{
-   
-    text-align: center;
-    height: 74px;
-    width: 50%;
-    margin: 0 auto;
     
+    width: 256px;
     position: relative;
+    margin: 0 auto;
+    padding: 1rem 0;
+    text-align: center;
 }
 
 .listing-archive-title > div,
@@ -4133,8 +4177,10 @@ div.related-listings-wrap article a{
     font-weight: 300;
     font-size: 1.125rem;
     
-    padding: 1.25rem 2.8rem 0 0;
+    padding: 0 2.8rem 0 0;
 }
+
+
 
 .more-info-wrap header > div{
     padding: 0.8rem 1.8rem 0 0;
@@ -4161,12 +4207,12 @@ div.related-listings-wrap article a{
     .resident-info-archive-title,
     .not-found-archive-title{
         text-align: center;
-        height: 90px; 
     }
     
-    .listing-archive-title > div{
+    .listing-archive-title > div,
+    .resident-info-archive-title > div{
         font-size: 1.6rem;
-        padding: 1rem 3.75rem 0 0;
+        padding:  0 3.75rem 0.5rem 0;
     }
     
     .not-found-archive-title > div{
@@ -4182,7 +4228,7 @@ div.related-listings-wrap article a{
 }
 
 .related-listing-title > div{
-    padding: 0.9rem 1.8rem 0 0;
+    padding: 0 1.8rem 0 0;
 }
 
 @media screen and (min-width:68.75em){
@@ -4253,9 +4299,6 @@ div.team-member-archive-thumb-wrap{
 }
 
 @media screen and (min-width: 26.875em){
-    
-    
-    
     
     .rpm-team-member-archive-wrap .site-main{
         /*text-align: center;*/  
@@ -4380,16 +4423,63 @@ div.team-member-archive-thumb-wrap,
     margin: 0;
 }
 
+.rpm-listing-archive-wrap #total-listings-count{
+    padding:0 10px;
+    margin-top: 0.5rem; 
+    text-align: right;
+    font-weight: 300;
+}
+
+.rpm-listing-archive-wrap .listing-page-break a{
+    display: block;
+    width:100%;
+    padding:0.25em 0;
+    margin-bottom: 0.5em;
+    text-align: center;
+    background-color: #000000;
+}
+
+@media screen and (min-width: 26.875em){
+    .rpm-listing-archive-wrap .listing-page-break a{
+        width:calc(100% - 1rem);
+        margin: 0 auto 0.5em;
+    }
+}
+
+.rpm-listing-archive-wrap .listing-page-break a:before,
+.rpm-listing-archive-wrap .listing-page-break a:after{
+    content:' ^ ';
+}
+
+.rpm-listing-archive-wrap .listing-page-break a:hover,
+.rpm-listing-archive-wrap .listing-page-break a:active,
+.rpm-listing-archive-wrap .listing-page-break a:focus
+{
+    text-decoration: none;
+    color:#232323;
+    background-color: #ffffff;
+}
+
+.rpm-listing-archive-wrap #more-listings-button{
+    display:block;
+    width:calc(100% - 1rem);
+    padding: 1.25em 0;
+    margin: 0 auto 0.5rem;
+    
+}
 
 .rpm-listing-archive-wrap article.hentry{
-    margin-bottom: 0.5rem;
+    margin-bottom:0.5rem;
 }
 .rpm-listing-archive-wrap article.hentry:first-child{
     margin-top: 0.5rem;
 }
+.rpm-listing-archive-wrap article.hentry:last-child{
+    /*margin-bottom: 0;*/
+}
 
 .rpm-listing-archive-wrap .status-private{
-    display:none;
+    /*display:none;*/
 }
 
 @media screen and (min-width:31.25em){
@@ -4449,7 +4539,7 @@ div.team-member-archive-thumb-wrap,
 }
 
 .type-listing .continue-reading a button{
-    padding: 0.65em;
+    padding: 1rem;
 }
 
 
@@ -4466,7 +4556,7 @@ div.team-member-archive-thumb-wrap,
     .rpm-listing-archive-wrap .type-listing .continue-reading{
         top:unset;
         bottom: 10%;
-        right:calc(22.5% - 61.211px);
+        right:calc(22.5% - 69.5px);
     }
     
     .type-listing .continue-reading a{
@@ -5093,6 +5183,7 @@ div.archive-listing-details{
 }
 
 .rpm-resident-info-archive-wrap .resident-info-archive-title{
+    height: auto;
     width:83%;
     margin:0 auto;
     /*outline: 1px solid red;*/
@@ -5103,12 +5194,23 @@ div.archive-listing-details{
     box-shadow:  2px 3px 5px #232323;
 }
 
+
 .rpm-resident-info-archive-wrap .resident-info-archive-title > div{
     padding:0.8rem 2.8rem 0 0;
 }
 
 .rpm-resident-info-archive-wrap .resident-info-archive-title > div + div{
-    padding:0;
+    padding:0 0 0.8rem 0;
+}
+
+@media screen and (min-width: 68.75em){
+    .rpm-resident-info-archive-wrap .resident-info-archive-title > div{
+        padding:1.25rem 4.25rem 0.5rem 0;
+    }
+
+    .rpm-resident-info-archive-wrap .resident-info-archive-title > div + div{
+        padding:0 0 1.25rem 0;
+    }
 }
 /*.resident-info-archive-title > div{
     padding-right: 2.1rem;
@@ -5130,7 +5232,19 @@ div.archive-listing-details{
 
 @media screen and (min-width: 50em){
     .rpm-resident-info-archive-wrap .resident-header-wrap{
-        flex:0 1 50%;
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+
+        -webkit-flex-flow: column;
+        -ms-flex-flow: column;
+        flex-flow: column;
+        
+        justify-content: center;
+        
+        -webkit-flex: 0 1 50%;
+        -ms-flex: 0 1 50%;
+        flex: 0 1 50%;
     }
 }
 
@@ -5228,13 +5342,32 @@ div.archive-listing-details{
 
 .rpm-resident-info-archive-wrap .resident-action button,
 .rpm-resident-info-archive-wrap .resident-action a{
-    color:#333333;
-    border:1px solid #232323;
-    padding: 0.6em 1em 0.4em 1em;
+    display:block;
+    width:66%;
+    padding: 1rem 0;
+    margin:0 auto;
     font-size: 0.75rem;
     font-weight: 400;
     font-family:'Montserrat', sans-serif;
+    color:#333333;
+    border:1px solid #232323;
 }
+
+.rpm-resident-info-archive-wrap .resident-action button:hover,
+.rpm-resident-info-archive-wrap .resident-action button:active,
+.rpm-resident-info-archive-wrap .resident-action button:focus{
+    color:#ffffff;
+    background-color: #333333;
+}
+
+.rpm-resident-info-archive-wrap .resident-action a:hover,
+.rpm-resident-info-archive-wrap .resident-action a:active,
+.rpm-resident-info-archive-wrap .resident-action a:focus{
+    text-decoration: none;
+    color:#ffffff;
+    background-color: #333333;
+}
+
 /*@media screen and (min-width: 50em){
     .rpm-resident-info-archive-wrap .entry-content,
     .rpm-resident-info-archive-wrap .resident-info-archive-forward{
@@ -5252,93 +5385,154 @@ p.rpmcpt_meta_textbox label { display: table-cell; }
 p.rpmcpt_meta_textbox input, p.rpmcpt_meta_checkbox { display: table-cell; margin-left:1em; }
 
 /*--------------------------------------------------------------
-### Information Page Template Styling
+### Contact Page Template Styling
 --------------------------------------------------------------*/
 .contact-page-wrap{
-    margin: 0.5em;
-}
-
-@media screen and (min-width:50em){
-    .contact-page-wrap{
-        margin-top: 50.375px;
-    }
+    /*margin: 0.5em;*/
 }
 
 .contact-page-wrap .site-main{
-    background-color: #333333;
     margin:0 auto;
+}
+
+@media screen and (min-width:30em){
+   
+    .contact-page-wrap .page{
+        width:calc(100% - 2rem);
+        padding-top:2rem;
+        margin: 60px auto 10px;
+        background-color: #333333;
+    }
+}
+
+@media screen and (min-width:50em){
+   
+    .contact-page-wrap .page{
+        margin:10px auto;
+    }
+}
+
+.contact-page-wrap .entry-header{
+    width: 256px;
+    position: relative;
+    margin: 0 auto;
+    padding: 0.5rem 0 0.25rem 0;
+    text-align: center;
 }
 
 .contact-page-wrap .entry-header h1{
     margin-top: 0;
 }
 
-.contact-us-title,
-.contact-page-wrap .reach-out-title{
+.contact-us-title{
    
     text-align: center;
-    height: 74px;
+    
     width: 50%;
     margin: 0 auto;
     
     position: relative;
 }
 
-.contact-page-wrap .reach-out-title{
-    margin: 2rem auto 1rem ;
-    border-top: 2px solid #fff;
-}
 
-.contact-us-title > div,
-.contact-page-wrap .reach-out-title > div{
+.contact-us-title > div{
     font-family:'Montserrat', sans-serif;
     font-size: 1.625rem;
-    padding-top: 1rem;
+    /*padding-top: 1rem;*/
 }
 
-.contact-page-wrap .reach-out-title > div{
-    padding-top: 2rem;
-}
+
 
 @media screen and (min-width:68.75em){
-    .contact-us-title > div,
-    .contact-page-wrap .reach-out-title > div{
+    .contact-us-title > div{
         font-size: 2.25rem;
     }
 }
 
 
-.contact-us-title > div + div,
-.contact-page-wrap .reach-out-title > div + div{
+.contact-us-title > div + div{
     font-family: 'Rubik', sans-serif;
     font-weight: 300;
     font-size: 1.125rem;
     padding:0 0 0 4rem;
 }
 
-.contact-page-wrap .reach-out-title > div + div{
-    padding: 0 0 0 2rem;
-}
+
 
 @media screen and (min-width:68.75em){
-    .contact-us-title > div + div,
-    .contact-page-wrap .reach-out-title > div + div{
+    .contact-us-title > div + div{
         font-size: 1.6rem;
-        padding:0 0 0 6rem;
+        padding:0.25rem 0 0 6.3rem;
     }
     
-    .contact-page-wrap .reach-out-title > div + div{
-        padding: 0 0 0 3rem;
+}
+
+.contact-page-wrap .entry-meta{
+    background-color:#ffffff;
+    padding: 2rem 0;
+}
+
+@media screen and (min-width:50em){
+    .contact-page-wrap .entry-meta{
+        display: -webkit-flex;
+        display: -ms-flexbox;
+        display: flex;
+
+        -webkit-flex-flow: row;
+        -ms-flex-flow: row;
+        flex-flow: row; 
+        
+        justify-content: center;
+
     }
 }
+
+.contact-page-wrap .meta-item{
+    padding:1rem 0 2rem 0;
+}
+
+@media screen and (min-width:50em){
+    .contact-page-wrap .meta-item{
+        -webkit-flex: 0 0 33%;
+        -ms-flex: 0 0 33%;
+        flex: 0 0 33%;
+    }
+}
+
+
+.contact-page-wrap .meta-item .meta-icon{
+    width: 30px;
+    height:auto;
+    margin:1rem auto;
+}
+
+.contact-page-wrap .meta-item h3{
+    color:#333333;
+    text-align: center;
+    font-size: 1.25em;
+    margin-top:0;
+}
+
+.contact-page-wrap .meta-item p{
+    width:83%;
+    margin:0 auto;
+    color:#333333;
+    text-align: center;
+}
+
 
 .contact-page-wrap .entry-content{
     font-weight: 300;
+    margin:0;
+    padding: 1.5em 0;
+    background-color:#333333;
 }
 
 .contact-page-wrap .entry-content > p{
-    margin:0;
-    padding: 0.5rem 1.75rem;
+    margin: 0 auto;
+    width: 66%;
+    padding: 1rem 0;
+    
 }
 
 @media screen and (min-width:30em){
@@ -5354,12 +5548,29 @@ p.rpmcpt_meta_textbox input, p.rpmcpt_meta_checkbox { display: table-cell; margi
     }
 }
 
-/*.contact-page-wrap .reach-out-title > div + div{
+.contact-page-wrap .contact-form-wrap{
+    padding: 2rem 0;
+    background-color: #333333;
+}
+
+.contact-page-wrap .contact-form-wrap .contact-form-heading{
+    text-align: center;
+    width: 50%;
+    margin: 0 auto 2rem;
+}
+
+.contact-page-wrap .contact-form-wrap .contact-form-heading > div{
+    font-family:'Montserrat', sans-serif;
+    font-size: 1.625rem;
+    /*padding-top: 1rem;*/
+}
+
+.contact-page-wrap .contact-form-wrap .contact-form-heading > div + div{
     font-family: 'Rubik', sans-serif;
     font-weight: 300;
     font-size: 1.125rem;
-    padding:0 0 0 4rem;
-}*/
+    padding: 0 0 0 3rem;
+}
 
 .contact-page-wrap form{
     width: 90%;
@@ -5379,6 +5590,26 @@ p.rpmcpt_meta_textbox input, p.rpmcpt_meta_checkbox { display: table-cell; margi
     color: #fff;
     border:none;
 }
+
+.contact-page-wrap form p input[type="submit"].wpcf7-submit{
+    width:100%;
+    font-size: 0.75rem;
+    font-weight: 400;
+    padding: 1.25em 0;
+    color: #fff;
+    background-color: #fff;
+    color:#000000;
+    border: 1px solid #000000;
+}
+
+.contact-page-wrap form p input[type="submit"].wpcf7-submit:hover,
+.contact-page-wrap form p input[type="submit"].wpcf7-submit:focus,
+.contact-page-wrap form p input[type="submit"].wpcf7-submit:active{
+    background-color: #000000;
+    color:#ffffff;
+    
+}
+
 
 /*--------------------------------------------------------------
 ### Login Page Template Styling
@@ -5518,12 +5749,279 @@ p.rpmcpt_meta_textbox input, p.rpmcpt_meta_checkbox { display: table-cell; margi
 }
 
 
+
 /*--------------------------------------------------------------
 ### Register Page Template Styling
 --------------------------------------------------------------*/
 .register-page input,
 .register-page input:focus{
-    color:#000;
+    /*color:#000;*/
+}
+
+@media screen and (min-width:30em){
+    .register-page{
+        width: calc(100% - 2rem);
+        max-width:800px;
+        margin:60px auto 0;
+        background-color: #fff;
+    }
+}
+
+@media screen and (min-width:30em){
+    .register-page{
+        margin:10px auto;
+    }
+}
+
+@media screen and (min-width:30em){
+    .register-page article.page{
+        padding-top:2rem;
+        margin-top:60px;
+    }
+}
+
+@media screen and (min-width:50em){
+     .register-page article.page{
+        padding-top:2rem;
+        margin-top:10px;
+    }
+}
+
+.register-page .entry-header{
+    width: 256px;
+    position: relative;
+    margin: 0 auto 0.4rem;
+    padding: 1.6rem 0 0.25rem 0;
+    text-align: center;
+}
+
+@media screen and (min-width:30em){
+    .register-page .entry-header{
+        color:#333333;
+    }
+}
+
+.register-page .entry-header div:nth-child(2n){
+    position: absolute;
+    font-size: 1.25rem;
+    top: 10%;
+    left: 25%;
+    font-weight: 300;
+}
+
+.register-page .entry-header div:last-child{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.75rem;
+}
+
+.register-page .entry-content{
+    background-color: #fff;
+    margin-top: 0;
+}
+
+.register-page .wppb-register-user{
+    width: 90%;
+    margin: 2rem auto;
+}
+
+.register-page .wppb-register-user ul{
+    list-style: none;
+    margin:0;
+    padding:0;
+    color: #333;
+}
+
+.register-page .wppb-register-user ul li{
+    margin-bottom: 1.5em;
+}
+
+.register-page .wppb-register-user input{
+    width:98%;
+    font-weight: 300;
+    border:0;
+    outline:1px solid #bbbbbb;
+    
+    padding: 3px;
+    width: calc(100% - 3px);
+    color:#333333;
+    
+    font-family: 'Rubik', sans-serif;
+    font-size: 16px;
+    font-size: 1rem;
+    line-height: 1.5em;
+    
+}
+
+.register-page .wppb-register-user input#send_credentials_via_email{
+    width:auto;
+    outline:none;
+}
+
+
+.register-page .wppb-register-user input.submit{
+    width: 100%;
+    font-size:0.75rem;
+    font-weight: 400;
+    padding:1rem 0;
+    color:#fff;
+    background-color: #404040;
+    border:1px solid #232323;
+}
+
+@media screen and (min-width:30em){
+   .register-page .wppb-register-user input.submit{
+        width: 50%;
+        font-size:1rem;
+        margin:0;
+    }
+}
+
+.register-page .wppb-register-user input.submit:hover,
+.register-page .wppb-register-user input.submit:active,
+.register-page .wppb-register-user input.submit:focus{
+    background-color:#bbbbbb;
+    color:#232323;
+}
+
+/*--------------------------------------------------------------
+### My Account Page Template Styling
+--------------------------------------------------------------*/
+@media screen and (min-width:30em){
+    .my-account-page{
+        width: calc(100% - 2rem);
+        max-width:800px;
+        margin:60px auto 0;
+        background-color: #fff;
+    }
+}
+
+@media screen and (min-width:30em){
+    .my-account-page{
+        margin:10px auto;
+    }
+}
+
+@media screen and (min-width:30em){
+    .my-account-page article.page{
+        padding-top:2rem;
+        margin-top:60px;
+    }
+}
+
+@media screen and (min-width:50em){
+     .my-account-page article.page{
+        padding-top:2rem;
+        margin-top:10px;
+    }
+}
+
+.my-account-page .entry-header{
+    width: 256px;
+    position: relative;
+    margin: 0 auto 0.4rem;
+    padding: 1.6rem 0 0.25rem 0;
+    text-align: center;
+}
+
+@media screen and (min-width:30em){
+    .my-account-page .entry-header{
+        color:#333333;
+    }
+}
+
+.my-account-page .entry-header div:nth-child(2n){
+    position: absolute;
+    font-size: 1.25rem;
+    top: 10%;
+    left: 35%;
+    font-weight: 300;
+}
+
+.my-account-page .entry-header div:last-child{
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.75rem;
+}
+
+.my-account-page .entry-content{
+    background-color: #fff;
+    margin-top: 0;
+}
+
+.my-account-page .wppb-edit-user{
+    width: 90%;
+    margin: 2rem auto;
+}
+
+.my-account-page .wppb-edit-user ul{
+    list-style: none;
+    margin:0;
+    padding:0;
+    color: #333;
+}
+
+.my-account-page .wppb-edit-user ul li{
+    margin-bottom: 1.5em;
+}
+
+.my-account-page .wppb-edit-user input{
+    width:98%;
+    font-weight: 300;
+    border:0;
+    outline:1px solid #bbbbbb;
+    
+    padding: 3px;
+    width: calc(100% - 3px);
+    color:#333333;
+    
+    font-family: 'Rubik', sans-serif;
+    font-size: 16px;
+    font-size: 1rem;
+    line-height: 1.5em;
+    
+}
+
+.my-account-page .wppb-edit-user input.submit{
+    width: 100%;
+    font-size:0.75rem;
+    font-weight: 400;
+    padding:1rem 0;
+    color:#fff;
+    background-color: #404040;
+    border:1px solid #232323;
+}
+
+@media screen and (min-width:30em){
+   .my-account-page .wppb-edit-user input.submit{
+        width: 50%;
+        font-size:1rem;
+        margin:0;
+    }
+}
+
+.my-account-page .wppb-edit-user input.submit:hover,
+.my-account-page .wppb-edit-user input.submit:active,
+.my-account-page .wppb-edit-user input.submit:focus{
+    background-color:#bbbbbb;
+    color:#232323;
+}
+
+/*--------------------------------------------------------------
+### Pay Rent Page Template Styling
+--------------------------------------------------------------*/
+.listing-archive-title > div,
+.related-listing-title > div,
+.team-member-archive-title > div,
+.resident-info-archive-title > div,
+.not-found-archive-title > div,
+.more-info-wrap header > div{
+    font-family: 'Rubik', sans-serif;
+    font-weight: 300;
+    font-size: 1.125rem;
+    
+    padding: 0 2.8rem 0 0;
+}
+.rpm-pay-rent-page-wrap {
+    
 }
 
 
@@ -5543,9 +6041,20 @@ p.rpmcpt_meta_textbox input, p.rpmcpt_meta_checkbox { display: table-cell; margi
 --------------------------------------------------------------*/
 
 .site-footer{
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+
+    -webkit-flex-flow: row wrap;
+    -ms-flex-flow: row wrap;
+    flex-flow: row wrap;
+
+    /*justify-content: space-around;*/
+    /*align-items: center;*/
+    position:relative;
     background-color: #000;
     color: #fff;
-    position:relative;
+    
     text-align:left;
     font-weight:300;
     font-size: 0.75rem;
@@ -5554,7 +6063,8 @@ p.rpmcpt_meta_textbox input, p.rpmcpt_meta_checkbox { display: table-cell; margi
 
 @media screen and (min-width: 43.75em){
     .site-footer{
-        padding: 1.5rem 0 3rem
+        /*padding: 1.5rem 0 3rem*/
+        justify-content: space-between;
     }
 }
 
@@ -5566,9 +6076,22 @@ p.rpmcpt_meta_textbox input, p.rpmcpt_meta_checkbox { display: table-cell; margi
 }
 
 .site-footer .top-jump-wrapper{
+     -webkit-flex: 1 0 auto;
+    -ms-flex: 1 0 auto;
+    flex: 1 0 auto;
     text-align: center;
+    margin: 1rem auto;
 }
 
+@media screen and (min-width: 43.75em){
+    .site-footer .top-jump-wrapper{
+        -webkit-flex: 0 1 20%;
+        -ms-flex: 0 1 20%;
+        flex: 0 1 20%;
+        
+        margin:0;
+    }
+}
 .site-footer a.top-jump{
 /*    position: absolute;
     left: 1rem;
@@ -5589,8 +6112,7 @@ p.rpmcpt_meta_textbox input, p.rpmcpt_meta_checkbox { display: table-cell; margi
 
 @media screen and (min-width: 43.75em){
     .site-footer a.top-jump{
-        bottom:unset;
-        /*top:1rem;*/
+       
     }
 }
 
@@ -5617,26 +6139,41 @@ p.rpmcpt_meta_textbox input, p.rpmcpt_meta_checkbox { display: table-cell; margi
 
 .site-footer a.top-jump button{
     display: block;
-    width:60px;
-    margin: 0 auto 1.5rem;
+    width:calc(100% - 1rem);
+    padding:1rem 0;
+    margin: 0 auto;
 }
+
+
 
 @media screen and (min-width: 59.375em){
     .site-footer a.top-jump button{
-        margin: 2rem 0 0 8.5%;
+        /*margin: 2rem 0 0 8.5%;*/
     }
 }
 
 .site-footer .custom-company-text-wrapper{
     margin-top: 0.5rem;
+    -webkit-flex: 0 0 100%;
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
     /*margin-bottom:calc( 225px + 2.5em );*/
+}
+
+@media screen and (min-width: 43.75em){
+    .site-footer .custom-company-text-wrapper{
+        margin: 0;
+        -webkit-flex: 0 0 auto;
+        -ms-flex: 0 0 auto;
+        flex: 0 0 auto;
+    }
 }
 
 @media screen and (min-width: 59.375em){
     .site-footer .custom-company-text-wrapper{
-       width:25%;
+/*       width:25%;
        display:inline-block;
-       margin:0 0 0 8.5%;
+       margin:0 0 0 8.5%;*/
     }
 }
 
@@ -5655,8 +6192,8 @@ p.rpmcpt_meta_textbox input, p.rpmcpt_meta_checkbox { display: table-cell; margi
 
 @media screen and (min-width: 59.375em){
     .site-footer .custom-company-text-inner-block{
-        margin:0;
-        text-align: left;
+/*        margin:0;
+        text-align: left;*/
     }
 }
 
@@ -5677,7 +6214,7 @@ p.rpmcpt_meta_textbox input, p.rpmcpt_meta_checkbox { display: table-cell; margi
 
 @media screen and (min-width: 59.375em){
     .site-footer .custom-company-text-inner-block p:nth-child(1){
-        left: 9%;
+        /*left: 9%;*/
     }
 }
 
@@ -5688,7 +6225,7 @@ p.rpmcpt_meta_textbox input, p.rpmcpt_meta_checkbox { display: table-cell; margi
 
 @media screen and (min-width: 59.375em){
     .site-footer .custom-company-text-inner-block p:nth-child(2){
-        left: 55%;
+        /*left: 55%;*/
     }
 }
 
@@ -5699,7 +6236,7 @@ p.rpmcpt_meta_textbox input, p.rpmcpt_meta_checkbox { display: table-cell; margi
 
 @media screen and (min-width: 59.375em){
     .site-footer .custom-company-text-inner-block p:nth-child(4){
-        left: 31.5%;
+        /*left: 31.5%;*/
     }
 }
 
@@ -5716,58 +6253,66 @@ p.rpmcpt_meta_textbox input, p.rpmcpt_meta_checkbox { display: table-cell; margi
 
 @media screen and (min-width: 59.375em){
     .site-footer .menu-footer-menu-container{
-        display:inline-block;
-        width:66%;
+        /*display:inline-block;*/
+        /*width:66%;*/
     }
 }
-
-.site-footer #footer-menu{
-    list-style: none;
-    background-color: #000;
-    text-align: center;
-    margin:2rem 0;
-    padding:0;
+.site-footer .footer-menu-wrap{
+    -webkit-flex: 0 0 calc(50% - 2rem);
+    -ms-flex: 0 0 calc(50% - 2rem);
+    flex: 0 0 calc(50% - 2rem);
+    
+    padding: 0 0 0 1rem;
 }
 
 @media screen and (min-width: 43.75em){
-    .site-footer #footer-menu{
-        text-align: left;
-        width:100%;
+    .site-footer .footer-menu-wrap{
+        -webkit-flex: 0 1 auto;
+        -ms-flex: 0 1 auto;
+        flex: 0 1 auto;
         
-        display: -webkit-flex;
-        display: -ms-flexbox;
-        display: flex;
-
-        -webkit-flex-flow: row;
-        -ms-flex-flow: row;
-        flex-flow: row;
+        padding: 0;
+        /*margin-left: 1.8rem;*/
     }
+   
 }
 
-@media screen and (min-width: 59.375em){
-    .site-footer #footer-menu{
-        margin:0 8.5% 0 0;
-    }
+.site-footer .footer-menu-wrap h3{
+    float:left;
+    font-size: 1.25rem;
+    margin:0.25rem 0 0 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #cccccc;
 }
 
-#footer-menu>li{
+.site-footer .footer-nav-menu{
+    clear:both;
+    list-style: none;
+    background-color: #000;
+    text-align: left;
+    margin:0 0 1rem 0;
+    padding:0.5rem 0 0 0;
+}
+
+
+.footer-nav-menu>li{
     
     padding: 0.2em;
     font-size: 0.8rem;
 }
 
 @media screen and (min-width: 43.75em){
-    #footer-menu>li{
-        text-align: center;
-        padding:0;
-        -webkit-flex: 0 0 20%;
+    .footer-nav-menu>li{
+        /*text-align: center;*/
+        /*padding:0;*/
+/*        -webkit-flex: 0 0 20%;
         -ms-flex: 0 0 20%;
-        flex: 0 0 20%;
+        flex: 0 0 20%;*/
     }
 }
 
-#footer-menu a,
-#footer-menu a:visited{
+.footer-nav-menu a,
+.footer-nav-menu a:visited{
     color: #ccc;
 }
 

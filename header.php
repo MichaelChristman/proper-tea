@@ -10,7 +10,7 @@
  */
 
 ?><!DOCTYPE html>
-<html <?php language_attributes(); ?>>
+<html <?php language_attributes(); ?> xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta charset="<?php bloginfo( 'charset' ); ?>">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -81,8 +81,8 @@
                                      <!--needs to be a translateable string-->
                                     <p class="login-status"><?php echo  __( 'status: signed in as', $text_domain ) ." ". $user_first_name; ?> </p>
                                     <ul>
-                                        <li><a href="<?php echo site_url();?>/my-account">My Account</a></li>
                                         <li><a href="<?php echo site_url();?>/current-residents">Resident Portal</a></li>
+                                        <li><a href="<?php echo site_url();?>/my-account">My Account</a></li>
                                         <li><a href="<?php echo wp_logout_url( home_url() );?>">Sign Out</a></li>
                                     </ul>
                                 <?php else : ?>

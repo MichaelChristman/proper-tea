@@ -18,17 +18,63 @@
                                 
                 </div>
 	</header><!-- .entry-header -->
-
-	<div class="entry-content">
+        
+        <div class="entry-content">
 		<?php
 			the_content();
-
-			wp_link_pages( array(
-				'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'proper-tea' ),
-				'after'  => '</div>',
-			) );
 		?>
 	</div><!-- .entry-content -->
+        
+        <div class="entry-meta">
+            
+            <div class="meta-item">
+                <figure class="meta-icon">
+                    <img src="<?php echo get_template_directory_uri().'/bg-images/largePhoneIcon.png' ?>"/> 
+                </figure><!--.meta-icon-->
+                
+                <h3>Phone</h3>
+                <p>
+                    (435) 215-7172
+                </p>
+            </div><!--.meta-item-->
+            
+            <div class="meta-item">
+                <figure class="meta-icon">
+                    <img src="<?php echo get_template_directory_uri().'/bg-images/largePhoneIcon.png' ?>"/> 
+                </figure><!--.meta-icon-->
+                
+                <h3>Address</h3>
+                <p>
+                    Resolutions Property Management</br>
+                    50 West 100 South</br>
+                    Moab, Utah 84532
+                </p>
+            </div><!--.meta-item-->
+            
+            <div class="meta-item">
+                <figure class="meta-icon">
+                    <img src="<?php echo get_template_directory_uri().'/bg-images/largePhoneIcon.png' ?>"/> 
+                </figure><!--.meta-icon-->
+                
+                <h3>Email</h3>
+                <p>
+                    info@bzrez.com
+                </p>
+            </div><!--.meta-item-->
+            
+            
+        </div><!--.entry-meta-->
+
+	
+        
+        <div class="contact-form-wrap">
+            <div class="contact-form-heading">
+                <h2 class="screen-reader-text">Reach Out</h2>
+                <div>Reach</div>
+                <div>Out</div>
+            </div>
+            <?php echo do_shortcode('[contact-form-7 id="1881" title="Resolutions Contact Us"]')?>
+        </div><!--.contact-form-wrap-->
 
 	<?php if ( get_edit_post_link() ) : ?>
 		<footer class="entry-footer">

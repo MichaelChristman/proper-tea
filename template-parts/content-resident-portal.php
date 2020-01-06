@@ -37,13 +37,13 @@
     <div class="resident-action">
         <h2>Pay Rent</h2>
         <p>Pay your rent online, no pesky humans.</p>
-        <button>Pay Rent</button>
+         <a href="<?php echo site_url();?>/pay-rent" >Pay Rent</a>
     </div>
     
     <div class="resident-action">
         <h2>Maintenance</h2>
         <p>Having issue's? We can send someone to check it out .</p>
-        <a href="<?php echo site_url();?>/maintenace" >Maintenance Request</a>
+        <a href="<?php echo site_url();?>/maintenance" >Maintenance Request</a>
     </div>
     
      <div class="resident-action">

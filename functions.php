@@ -8,6 +8,7 @@
  */
 
 require_once('rpm-custom-post-types.php');
+require_once('mcs-payment.php');
 
 if ( ! function_exists( 'proper_tea_setup' ) ) :
 /**
@@ -53,7 +54,8 @@ function proper_tea_setup() {
 	// This theme uses wp_nav_menu() in one location.
 	register_nav_menus( array(
 		'primary' => esc_html__( 'Primary', 'proper-tea' ),
-                'footer-menu'  => esc_html__( 'footer-menu', 'proper-tea' )
+                'footer-site-menu'  => esc_html__( 'footer-site-menu', 'proper-tea' ),
+                'footer-account-menu'  => esc_html__( 'footer-account-menu', 'proper-tea' )
 	) );
 
 	/*
@@ -138,13 +140,25 @@ function proper_tea_scripts() {
         
         wp_enqueue_script('proper-tea-functions', get_template_directory_uri() .'/js/functions.js', ['jquery'],'20170725', true);
         
+        wp_enqueue_script('proper-tea-payment-gateway', 'https://ecommerce.merchantware.net/v1/CayanCheckout.js','20191115',true);
+        wp_enqueue_script('proper-tea-create-payment-token',get_template_directory_uri() .'/js/createPaymentToken.js',['jquery'],'20190910',true);
+//         wp_enqueue_script('proper-tea-web-api-key', CayanCheckoutPlus.setWebApiKey("RLKQX5T6CA7VMYNT");,'20190910',true);
+        
         wp_enqueue_script('proper-tea-listing-carousel', get_template_directory_uri() .'/js/listing-carousel.js', ['jquery'],'20190122', true);
         
         wp_register_script('proper_tea_price_sort',get_template_directory_uri() .'/js/priceSort.js', ['jquery'],'20170808', true);
         wp_enqueue_script('proper_tea_price_sort', get_template_directory_uri() .'/js/priceSort.js', ['jquery'],'20170808', true);
         global $wp_query;
         $qv = $wp_query->query;
-        wp_localize_script('proper_tea_price_sort', 'proper_tea_price_sort_data', ['query' => $qv] );
+        $count_listings = $wp_query->found_posts;
+//        var_dump($qv);
+        wp_localize_script('proper_tea_price_sort', 'proper_tea_price_sort_data', ['total_listings' => $count_listings,'query' => $qv] );
+        
+        wp_enqueue_script('proper-tea-listing-load-posts', get_template_directory_uri() .'/js/listing-load-posts.js', ['jquery'],'20190716', true);
+        
+        $ajax_url = esc_url( home_url() ).'/wp-admin/admin-ajax.php';
+        
+        wp_localize_script('proper-tea-listing-load-posts', 'proper_tea_listing_load_posts_data', ['total_listings' => $count_listings,'ajax_url' => $ajax_url,'query' => $qv ]);
         
         wp_enqueue_script('proper-tea-team-member-display-info', get_template_directory_uri() .'/js/team-member-display-info.js', ['jquery'],'20180315', true);
        

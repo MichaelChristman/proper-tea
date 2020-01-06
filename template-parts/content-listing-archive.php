@@ -12,8 +12,16 @@
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?> >
     
         <header class="entry-header"> 
-            
-		<?php echo '<a href="' . esc_url( get_permalink() ) . '" rel="bookmark" tabindex="0">';?>
+                
+		<?php 
+                
+                global $wp_query;
+                
+                if(!$wp_query->query_vars['pagename'] == 'pay-rent'){
+                    echo '<a href="' . esc_url( get_permalink() ) . '" rel="bookmark" tabindex="0">';
+                }
+                
+                ?>
                     <div class="listing-archive-thumb-wrap" >
                         <?php 
                         if ( is_front_page() ){
@@ -26,7 +34,11 @@
                            
                         </span><!--.listing-archive-filter-->
                     </div><!--.listing-archive-thumb--->
-                <?php echo '</a>'; ?>
+                <?php 
+                if(!$wp_query->query_vars['pagename'] == 'pay-rent'){
+                    echo '</a>';
+                }
+                ?>
                     
                    
                 
@@ -103,11 +115,18 @@
                     );
 
                     ?>
-                    <a href="<?php echo esc_url( get_permalink() ) ?>" rel="bookmark">
-                        <button>  
-                            <?php echo $read_more_link; ?>
-                        </button>
-                    </a>  
+                    
+                    <?php
+                     if(!$wp_query->query_vars['pagename'] == 'pay-rent'){
+                    ?>
+                        <a href="<?php echo esc_url( get_permalink() ) ?>" rel="bookmark">
+                            <button>  
+                                <?php echo $read_more_link; ?>
+                            </button>
+                        </a>  
+                    <?php
+                     }
+                    ?>
                 </div><!-- .continue-reading -->
                 
                 <?php
