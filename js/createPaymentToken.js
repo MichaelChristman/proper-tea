@@ -59,60 +59,6 @@
                 console.log('The token status is not true, something unexpected happened');
             }
         }
-
-        
-//        if(isValidAmount){
-//            //create a promise
-//            const promise = new Promise(function(resolve, reject){
-//                
-//                console.log('This is what the inside of a promise looks like.');
-//                
-//                // do a thing, possibly async, then…
-//                var isTokenSet = $("input[name='paymentToken'").val();
-//                
-//                if(isTokenSet){
-//                  resolve("Stuff worked!");
-//                }else {
-//                  reject(Error("It broke"));
-//                }
-//               
-//            });
-//            
-//            promise.then(function(result) {
-//                console.log(result); // "Stuff worked!"
-//            },function(err) {
-//                console.log(err); // Error: "It broke"
-//            });
-//        }
-//        
-        
-        
-        //test that the token has been set
-//        var isTokenSet = $("input[name='paymentToken'").val();
-//        
-//        if(isTokenSet){
-//            console.log('Token Value is set');
-//        }else{
-//            console.log('The token is not yet set');
-//        }
-        
-                    // AJAX SOAP request here
-//            $.ajax({
-//                type:POST,
-//                url:serviceURL,
-//                data:{
-//                    envelope:buildSOAPEnvelope();
-//                },
-//                
-//                success: function ( response ) {
-//                    
-//                },
-//                
-//                error: function (XMLHttpRequest, textStatus, errorThrown) {
-//                    alert(errorThrown);
-//                }
-//                
-//            });
         
     });
     
@@ -195,7 +141,7 @@
                    </Sale>\
                 </soap:Body>\
              </soap:Envelope>';
-        console.log(soapMessage);
+        //console.log(soapMessage);
         return soapMessage;
     }
     

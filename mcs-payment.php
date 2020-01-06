@@ -95,31 +95,3 @@ function mcs_pay_rent_form(){
     return $output;
 }
 
-
-function isPost($server){
-        
-        return (strtoupper($server['REQUEST_METHOD']) == 'POST');
-}
-	
-function requestSale($token, $amount){
-        echo "REQUEST SALE HAS BEEN INVOKED!";
-        global $referenceNumber, $responseMessage;
-        $client = new SoapClient('https://ps1.merchantware.net/Merchantware/ws/retailTransaction/v4/credit.asmx?WSDL', array('trace' => true));
-        $response = $client->SaleVault(
-                array(
-                        'merchantName'           => 'Test bzrezcom',
-                        'merchantSiteId'         => 'YM1J7IQT',
-                        'merchantKey'            => 'W3862-R4YA1-D01SV-JPP6U-31EVU',
-                        'invoiceNumber'          => '123',
-                        'amount'                 => $amount,
-                        'vaultToken'             => $token,
-                        'forceDuplicate'         => 'true',
-                        'registerNumber'         => '123',
-                        'merchantTransactionId'  => '1234'
-                )
-        );
-        $result = $response->SaleVaultResult;
-        $responseMessage = $result->ApprovalStatus;
-        $amount = $result->Amount;
-        $referenceNumber = $result->Token;
-}
