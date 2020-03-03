@@ -1,6 +1,6 @@
 <?php
 /**
- * Template part for displaying page content in page.php.
+ * Template part for displaying page content in pay-rent-page.php.
  *
  * @link https://codex.wordpress.org/Template_Hierarchy
  *
@@ -15,40 +15,48 @@
     $responseMessage = "Declined";
     
     function isPost($server){
-            echo "INVOKE isPost";
-            return (strtoupper($server['REQUEST_METHOD']) == 'POST');
+//        echo "INVOKE isPost";
+        return (strtoupper($server['REQUEST_METHOD']) == 'POST');
     }
 
     function requestSale($token, $amount){
-            echo "REQUEST SALE HAS BEEN INVOKED!";
+//            echo "REQUEST SALE HAS BEEN INVOKED!";
             global $referenceNumber, $responseMessage;
-            $client = new SoapClient('https://ps1.merchantware.net/Merchantware/ws/retailTransaction/v4/credit.asmx?WSDL', array('trace' => true));
-            $response = $client->SaleVault(
-                    array(
-                            'merchantName'           => 'Test bzrezcom',
-                            'merchantSiteId'         => 'YM1J7IQT',
-                            'merchantKey'            => 'W3862-R4YA1-D01SV-JPP6U-31EVU',
-                            'invoiceNumber'          => '123',
-                            'amount'                 => $amount,
-                            'vaultToken'             => $token,
-                            'forceDuplicate'         => 'true',
-                            'registerNumber'         => '123',
-                            'merchantTransactionId'  => '1234'
-                    )
-            );
-            $result = $response->SaleVaultResult;
-            $responseMessage = $result->ApprovalStatus;
-            $amount = $result->Amount;
-            $referenceNumber = $result->Token;
+            $client = new SoapClient('https://ps1.merchantware.net/Merchantware/ws/retailTransaction/v4/credit.asmx?WSDL');
+            var_dump($client);
+//            $response = $client->SaleVault(
+//                    array(
+//                            'merchantName'           => 'Test bzrezcom',
+//                            'merchantSiteId'         => 'YM1J7IQT',
+//                            'merchantKey'            => 'W3862-R4YA1-D01SV-JPP6U-31EVU',
+//                            'invoiceNumber'          => '123',
+//                            'amount'                 => $amount,
+//                            'vaultToken'             => $token,
+//                            'forceDuplicate'         => 'true',
+//                            'registerNumber'         => '123',
+//                            'merchantTransactionId'  => '1234'
+//                    )
+//            );
+//            $result = $response->SaleVaultResult;
+//            $responseMessage = $result->ApprovalStatus;
+//            $amount = $result->Amount;
+//            $referenceNumber = $result->Token;
     }
 ?>
 
 
 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
     
+        <?php 
+        if(isPost($_SERVER) && $_POST["paymentToken"]){
+                echo "conditions met to REQUEST SALE!";
+                requestSale($_POST["paymentToken"], $amount);
+        }
+	?>
+    
         <header class="page-header">
             <div class="pay-rent-title">
-                <h1 class="page-title screen-reader-text"><?php echo __( 'Pay Rent', 'rpm-custom-post-types' )?>Pay Rent</h1>
+                <h1 class="page-title screen-reader-text"><?php echo __( 'Pay Rent', 'rpm-custom-post-types' )?></h1>
 
                 <div><?php echo __( 'Pay', 'rpm-custom-post-types' )?></div>
                 <div><?php echo __( 'Rent', 'rpm-custom-post-types' )?></div>
@@ -72,8 +80,8 @@
 //                        var_dump($userName);
                 ?>
                         <div class="account-details">
-                            <p><?php echo ''.$userName.'';?></p>
-                            <h3>Current Address</h3>
+                            <p><?php echo __( 'Current User:', 'rpm-custom-post-types' ).' '.$userName.'';?></p>
+                            <h3><?php echo __( 'Address', 'rpm-custom-post-types' )?></h3>
                             <?php
                             
                         
@@ -96,8 +104,8 @@
                                 
                                 while ( $query->have_posts() ) {
                                     $query->the_post();
-                                  
-                                    get_template_part( 'template-parts/content', 'listing-archive' );
+                                    echo the_title();
+//                                    get_template_part( 'template-parts/content', 'listing-archive' );
                                 }
                                 
                             } else {
@@ -112,6 +120,9 @@
                             
                             <h3>Rent Amount</h3>
                             <p>$700.00</p>
+                        </div>
+                        <div id="LoadingImage" class="form-loading" style="display:none;">
+                            <img src="<?php echo get_template_directory_uri().'/bg-images/wait24.gif'?>"/>
                         </div>
                 <?php
                         

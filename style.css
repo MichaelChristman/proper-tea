@@ -6008,17 +6008,30 @@ p.rpmcpt_meta_textbox input, p.rpmcpt_meta_checkbox { display: table-cell; margi
 /*--------------------------------------------------------------
 ### Pay Rent Page Template Styling
 --------------------------------------------------------------*/
-.listing-archive-title > div,
-.related-listing-title > div,
-.team-member-archive-title > div,
-.resident-info-archive-title > div,
-.not-found-archive-title > div,
-.more-info-wrap header > div{
+.rpm-pay-rent-page-wrap{
+    margin:0 0.5em;
+}
+
+.pay-rent-title{
+    width: 256px;
+    position: relative;
+    margin: 0 auto;
+    padding: 1rem 0;
+    text-align: center;
+}
+
+.pay-rent-title > div{
     font-family: 'Rubik', sans-serif;
     font-weight: 300;
     font-size: 1.125rem;
+}
+
+.pay-rent-title > div + div{
+    font-family:'Montserrat', sans-serif;
+    font-size: 1.625rem;
     
-    padding: 0 2.8rem 0 0;
+    padding: 0;
+    margin-top: -0.25rem;
 }
 .rpm-pay-rent-page-wrap {
     

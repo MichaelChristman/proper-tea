@@ -1,171 +1,44 @@
 ( function( $ ) {
-    $('#submitPayment').click(function (e) {
-        // Prevent the user from double-clicking
-        $(this).prop('disabled', true);
-        
-        e.preventDefault();
-        
-        //verify amount
-        var rentAmount = $("input[name='formtransamount'").val();
-        
-        if(isCurrency(rentAmount)){
-            console.log('Valid Rent Amount'); 
-            var isValidAmount = true;
-        }else{
-            alert('Invalid rent amount');
-        }
-        
-        
-        setToken(makeAJAXcall);
-        
-        function setToken(callback){
-            // Create the payment token
-            CayanCheckout.createPaymentToken({
-                success: function(response) {
-                callback(successCallback(response));
-            },
-                error: failureCallback
-            });
-        }
-        
-        function makeAJAXcall(tokenStatus) {
-//            console.log(result);
-            if(tokenStatus === true){
-                console.log('Token Status is true, make AJAX SOAP CALL'); 
-                
-                var soapMessage = buildSOAPEnvelope();
-                var serviceURL = "https://ps1.merchantware.net/Merchantware/ws/RetailTransaction/v45/Credit.asmx";
-//                var originDomain = "http://localhost";
-                
-                $.ajax({
-                    url:serviceURL,
-                    type:'POST',
-                    dataType: "xml",
-                    data:{
-                        envelope:soapMessage
-                    },
-                    contentType: "text/xml; charset=\"utf-8\"",
-                    
-                    success: function ( response ) {
-                        console.log(response);
-                    },
-
-                    error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        console.log(errorThrown);
-                    }
-
-                });
-            }else{
-                console.log('The token status is not true, something unexpected happened');
-            }
-        }
-        
-    });
     
-    function successCallback(tokenResponse) {
-        console.log('SUCCESSCALLBACK');
-//        console.log(tokenResponse);
-        // Populate a hidden field with the single-use token
-        $("input[name='paymentToken'").val(tokenResponse.token);
-
-        // Submit the form
-        $('#paymentForm').submit();
-        
-        var isTokenSet = false;
-        
-        if($("input[name='paymentToken'").val() !== ''){
-            console.log('the token is set');
-            isTokenSet = true;
-        }else{
-            console.log('the token was not set');
-        }
-        
-        return isTokenSet;
-        
-        //build SOAP envelope
-//        buildSOAPEnvelope();
+    function toggleForm() {
+        $("#rentPaymentForm").toggle();
+        $("#LoadingImage").toggle();
     }
+    
+    // client defined callback to handle the successful token response
+    function HandleTokenResponse(tokenResponse) {
+//        console.log('SUCCESSCALLBACK');
+        var tokenHolder = $("#paymentToken");
+        if (tokenResponse.token !== "") {
+            tokenHolder.val(tokenResponse.token);
+        }else{
+            toggleForm();
+            return;
+        }
 
-    function failureCallback(errorResponses) {
+        // Show "waiting" gif
+        $("#rentPaymentForm").submit();
+    }
+    
+     // client-defined callback to handle error responses
+    function HandleErrorResponse(errorResponses) {
+        toggleForm();
         var errorText = "";
         for (var key in errorResponses) {
-             errorText += " Error Code: " + errorResponses[key].error_code + " Reason: " + errorResponses[key].reason + "\n";
+            errorText += " Error Code: " + errorResponses[key].error_code + " Reason: " + errorResponses[key].reason + "\n";
         }
         alert(errorText);
+    }
+    
+    // create a submit action handler on the payment form, which calls CreateToken
+    $("#SubmitButton").click(function (ev) {
+//        toggleForm();
+        CayanCheckout.createPaymentToken({ success: HandleTokenResponse, error: HandleErrorResponse });
 
-    }
-    
-    function buildSOAPEnvelope(){
-//        alert("Building envelope");
-        cardHolder = $("input[name='formcardholder'").val();
-        cardNumber = $("input[name='formcardnumber'").val();
-        cardVerificationValue = $("input[name='formcvv'").val();
-        
-        expirationMonth = $("input[name='formexpiremonth'").val();
-        expirationYearFull = $("input[name='formexpireyear'").val();
-        expirationYear = expirationYearFull.substr(expirationYearFull.length - 2);
-        expirationDate = ""+expirationMonth+""+expirationYear;
-        
-        streetAddress = $("input[name='formstreetaddress'").val();
-        zipCode = $("input[name='formzipcode'").val();
-        
-        tokenValue =  $("input[name='paymentToken'").val();
-        
-        amount = $("input[name='formtransamount'").val();
-        typedAmount = +amount
-        formattedAmount = typedAmount.toFixed(2).toString();
-        
-        soapMessage = 
-            '<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope">\
-                <soap:Body>\
-                   <Sale xmlns="http://schemas.merchantwarehouse.com/merchantware/v45/">\
-                      <Credentials>\
-                         <MerchantName>Test bzrezcom</MerchantName>\
-                         <MerchantSiteId>YM1J7IQT</MerchantSiteId>\
-                         <MerchantKey>W3862-R4YA1-D01SV-JPP6U-31EVU</MerchantKey>\
-                      </Credentials>\
-                      <PaymentData>\
-                         <Source>Keyed</Source>\
-                         <!--Keyed Fields-->\
-                         <CardNumber>'+cardNumber+'</CardNumber>\
-                         <ExpirationDate>'+expirationDate+'</ExpirationDate>\
-                         <CardHolder>'+cardHolder+'</CardHolder>\
-                         <AvsStreetAddress>'+streetAddress+'</AvsStreetAddress>\
-                         <AvsZipCode>'+zipCode+'</AvsZipCode>\
-                         <CardVerificationValue>'+cardVerificationValue+'</CardVerificationValue>\\n\
-                         <Token>'+tokenValue+'</Token>\
-                       </PaymentData>\
-                      <Request>\
-                         <Amount>'+formattedAmount+'</Amount>\
-                      </Request>\
-                   </Sale>\
-                </soap:Body>\
-             </soap:Envelope>';
-        //console.log(soapMessage);
-        return soapMessage;
-    }
-    
-    function isCurrency($number){
-      var regularExpression = /^\d+(?:\.\d{0,2})$/;
-      var toNumber = +$number;
-      
-      if (isNaN(toNumber)){
-          alert("This is not a number");
-          return false;
-      }
-      
-      var currencyFormat = toNumber.toFixed(2);
-      
-    
-      if(regularExpression.test(currencyFormat)){
-          console.log("valid input");
-      }else{
-          alert("invalid input");
-          return false;
-      }
-      
-      return true;
-    }
+        // AJAX SOAP request here
+
+        ev.preventDefault();
+    });
 } )( jQuery );
 
 

@@ -6,7 +6,6 @@
  * @subpackage proper-tea
  * @since proper-tea 0.1
  */
-
 get_header(); ?>
     <div class="rpm-pay-rent-page-wrap <?php if( !is_user_logged_in() ):?>log-in-page-wrap<?php endif;?>"   <?php if( !is_user_logged_in() ):?>style="background-image: url(<?php echo get_template_directory_uri().'/bg-images/mesa-lookout.jpg' ?>)"<?php endif;?>>
 	<div id="primary" class="content-area">

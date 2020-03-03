@@ -74,11 +74,17 @@ function mcs_pay_rent_form(){
     $card_billing_address .= '</div><!--.mcs-street-address-->';
     $card_billing_address .= '</div><!--.mcs-billing-address-->';
     
-    $submit_button  = '<div class="mcs-submit">';
-    $submit_button .= '<input type="hidden" name="paymentToken" value="">';
-    $submit_button .= '<button type="button" id="submitPayment">'.__('Submit','rpm-custom-post-types').'</button>';
-    $submit_button .= '</div><!--.mcs-submit-->';
-       
+//    $submit_button  = '<div class="mcs-submit">';
+//    $submit_button .= '<input name="paymentToken" type="text" id="paymentToken" style="display:none;">';
+//    $submit_button .= '<button type="button" id="submitPayment">'.__('Submit','rpm-custom-post-types').'</button>';
+//    $submit_button .= '</div><!--.mcs-submit-->';
+    
+    $form_actions  = '<div class="form-actions">';
+    $form_actions .= '<input name="paymentToken" type="hidden" id="paymentToken" value="">';
+    $form_actions .= '<input type="button" name="SubmitButton" value="'.__('Complete Checkout','rpm-custom-post-types').'" id="SubmitButton" class="btn btn-primary" />';
+    $form_actions .= '<input type="button" name="SaleButton" value="'.__('Submit Payment','rpm-custom-post-types').'" onclick="javascript:__doPostBack(&#39;SaleButton&#39;,&#39;&#39;)" id="SaleButton" class="btn btn-primary" style="display:none;" />';
+    $form_actions .= '</div>';
+  
     $output  = '<form method="POST" id="rentPaymentForm" class="mcs-payment-form">';
     $output .= $error_message;
     $output .= $transaction_amount;
@@ -89,9 +95,19 @@ function mcs_pay_rent_form(){
     $output .= $card_expire_month;
     $output .= $card_expire_year;
     $output .= $card_billing_address;
-    $output .= $submit_button;
+//    $output .= $submit_button;
+    $output .= $form_actions;
     $output .= '</form><!--#rentPaymentForm-->';
     
     return $output;
 }
 
+
+//
+//add_action( 'wp_ajax_'.'post_rent_form', 'mcs_post_rent_form' );
+//add_action( 'wp_ajax_nopriv_'.'post_rent_form', 'mcs_post_rent_form' );
+//
+//function mcs_post_rent_form(){
+//    
+//    die;
+//}
